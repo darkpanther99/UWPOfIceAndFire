@@ -13,18 +13,33 @@ namespace TXC54G_HF.ViewModels
 {
     class MainPageViewModel
     {
-        public CharacterHelper character { get; set; } = new CharacterHelper() { name = "jani" };
         public ObservableCollection<BaseHelper> listitems { get; set; } = new ObservableCollection<BaseHelper>();
+        private int page = 1;
+        private int lastClicked = -1;
         public async void Search(string searchtext)
         {
-            //var previewcharacters = await CharacterService.Instance.GetCharacterPreviewAsync(searchtext);
-            
-            //character.name = previewcharacters[0].name;
-
+            //TODO SEARCH
+        }
+        public void initPage()
+        {
+            page = 1;
+        }
+        public void nextPage()
+        {
+            page++;
+        }
+        public void previousPage()
+        {
+            page--;
         }
         public async void ListPreviews(int cnt)
         {
             listitems.Clear();
+            if (cnt != lastClicked)
+            {
+                initPage();
+            }
+            lastClicked = cnt;
             switch (cnt)
             {
                 case 0:
@@ -42,7 +57,7 @@ namespace TXC54G_HF.ViewModels
         }
         private async void ListCharacters()
         {
-            var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync();
+            var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync(page);
             foreach (var p in previewitems)
             {
                 listitems.Add(p);
@@ -50,7 +65,7 @@ namespace TXC54G_HF.ViewModels
         }
         private async void ListHouses()
         {
-            var previewitems = await HouseService.Instance.GetHousesPreviewAsync();
+            var previewitems = await HouseService.Instance.GetHousesPreviewAsync(page);
             foreach (var p in previewitems)
             {
                 listitems.Add(p);
@@ -58,7 +73,7 @@ namespace TXC54G_HF.ViewModels
         }
         private async void ListBooks()
         {
-            var previewitems = await BookService.Instance.GetBooksPreviewAsync();
+            var previewitems = await BookService.Instance.GetBooksPreviewAsync(page);
             foreach (var p in previewitems)
             {
                 listitems.Add(p);

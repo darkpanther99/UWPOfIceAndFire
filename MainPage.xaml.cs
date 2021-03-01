@@ -62,5 +62,15 @@ namespace TXC54G_HF
         {
             ViewModel.ListPreviews(2);
         }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            ViewModel.previousPage();
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            ViewModel.nextPage();
+        }
     }
 }

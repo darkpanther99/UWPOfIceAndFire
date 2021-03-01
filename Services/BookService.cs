@@ -29,9 +29,9 @@ namespace TXC54G_HF.Services
         {
             return await GetBookAsyncFromFullUrl(new Uri(baseUrl, $"books/{id}"), depth: 0);
         }
-        public async Task<List<BookHelper>> GetBooksPreviewAsync()
+        public async Task<List<BookHelper>> GetBooksPreviewAsync(int page)
         {
-            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books"));
+            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?page={page}"));
         }
 
         public async Task<Book> GetBookAsyncFromFullUrl(Uri uri, int depth)
