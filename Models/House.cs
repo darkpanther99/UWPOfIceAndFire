@@ -23,8 +23,8 @@ namespace TXC54G_HF.Models
         public Character founder { get; set; }
         public string diedOut { get; set; }
         public string[] ancestralWeapons { get; set; }
-        public House[] cadetBranches { get; set; }
-        public Character[] swornMembers { get; set; }
+        public List<House> cadetBranches { get; set; }
+        public List<Character> swornMembers { get; set; }
     }
 
 }

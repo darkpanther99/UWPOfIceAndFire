@@ -5,48 +5,68 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TXC54G_HF.Models;
+using TXC54G_HF.Services.HelperModels;
 
 namespace TXC54G_HF.Services
 {
     class BookService : BaseService
     {
-        CharacterService characterService = new CharacterService();
+        private BookService() { }
+        private static BookService instance = null;
+        public static BookService Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new BookService();
+                }
+                return instance;
+            }
+        }
+        
         public async Task<Book> GetBookAsync(int id)
         {
-            var book = await GetAsync<Book>(new Uri(baseUrl, $"books/{id}"));
-            foreach (var b in book.characters)
-            {
-                try
-                {
-                    await characterService.GetCharacterAsyncFromFullUrl(b);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-            }
-
-            return book;
-
-
+            return await GetBookAsyncFromFullUrl(new Uri(baseUrl, $"books/{id}"), depth: 0);
         }
 
-        public async Task<Book> GetBookAsyncFromFullUrl(string uri)
+        public async Task<Book> GetBookAsyncFromFullUrl(Uri uri, int depth)
         {
-            var book = await GetAsync<Book>(new Uri(uri));
-            foreach (var b in book.characters)
+            if (depth > 1)
             {
-                try
-                {
-                    await characterService.GetCharacterAsyncFromFullUrl(b);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
+                return null;
+            }
+            CharacterService characterService = CharacterService.Instance;
+            var bookhelper = await GetAsync<BookHelper>(uri);
+            var characters = new List<Character>();
+            var povCharacters = new List<Character>();
+
+            foreach (var bookcharacter in bookhelper.characters)
+            {
+                    Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookcharacter), depth + 1);
+                    characters.Add(c);
+            }
+            foreach (var bookcharacter in bookhelper.povCharacters)
+            {
+                    Character pc = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookcharacter), depth + 1);
+                    povCharacters.Add(pc);
             }
 
-            return book;
+
+            return new Book()
+            {
+                url = bookhelper.url,
+                name = bookhelper.name,
+                isbn = bookhelper.isbn,
+                authors = bookhelper.authors,
+                numberOfPages = bookhelper.numberOfPages,
+                publisher = bookhelper.publisher,
+                country = bookhelper.country,
+                mediaType = bookhelper.mediaType,
+                released = bookhelper.released,
+                characters = characters,
+                povCharacters = povCharacters
+            };
         }
 
     }

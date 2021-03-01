@@ -19,8 +19,8 @@ namespace TXC54G_HF.Models
         public string country { get; set; }
         public string mediaType { get; set; }
         public DateTime released { get; set; }
-        public Character[] characters { get; set; }
-        public Character[] povCharacters { get; set; }
+        public List<Character> characters { get; set; }
+        public List<Character> povCharacters { get; set; }
 
     }
 

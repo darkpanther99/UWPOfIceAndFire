@@ -26,17 +26,43 @@ namespace TXC54G_HF
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private BookService service = new BookService();
+        private BookService bookservice = BookService.Instance;
+        private CharacterService characterService = CharacterService.Instance;
+        private List<Book> books = new List<Book>();
+        private List<Character> characters = new List<Character>();
+        public Character character { get; set; }
         public MainPage()
         {
             this.InitializeComponent();
-            Debug.WriteLine(GetBook(1));
-            
+            character = new Character()
+            { name = "Jani" };
+            DataContext = this;
+            //book = GetBook(1).Result;
+            Test();
+
+
+        }
+
+        private async void Test()
+        {
+            //books.Add(await GetBook(1));
+            //characters.Add(await GetCharacter(2));
+            //Debug.WriteLine(characters[0].name);
+            //character = characters[0];
+            //var temp = await GetCharacter(2);
+            var temp = await characterService.GetCharactersAsyncFromName("Jon Snow");
+            Debug.WriteLine(temp[0].name);
+            character.name = temp[0].name;
+        }
+
+        private async Task<Character> GetCharacter(int id)
+        {
+            return await characterService.GetCharacterAsync(id);
         }
 
         private async Task<Book> GetBook(int id)
         {
-            return await service.GetBookAsync(id);
+            return await bookservice.GetBookAsync(id);
         }
     }
 }
