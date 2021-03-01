@@ -33,6 +33,10 @@ namespace TXC54G_HF.Services
         {
             return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?page={page}"));
         }
+        public async Task<List<BookHelper>> GetBooksPreviewAsyncFromName(string name)
+        {
+            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?name={name}"));
+        }
 
         public async Task<Book> GetBookAsyncFromFullUrl(Uri uri, int depth)
         {

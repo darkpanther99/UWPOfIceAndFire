@@ -33,6 +33,18 @@ namespace TXC54G_HF.Services
         {
             return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?page={page}"));
         }
+        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromName(string name)
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?name={name}"));
+        }
+        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromRegion(string region, int page)
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?region={region}&page={page}"));
+        }
+        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromWords(string words, int page)
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?words={words}&page={page}"));
+        }
 
         public async Task<House> GetHouseAsyncFromFullUrl(Uri uri, int depth)
         {

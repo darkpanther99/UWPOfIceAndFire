@@ -16,10 +16,6 @@ namespace TXC54G_HF.ViewModels
         public ObservableCollection<BaseHelper> listitems { get; set; } = new ObservableCollection<BaseHelper>();
         private int page = 1;
         private int lastClicked = -1;
-        public async void Search(string searchtext)
-        {
-            //TODO SEARCH
-        }
         public void initPage()
         {
             page = 1;
@@ -36,7 +32,14 @@ namespace TXC54G_HF.ViewModels
                 initPage();
             }
         }
-        public async void ListPreviews(int cnt)
+        public void Search(string searchtext)
+        {
+            SearchCharacters(searchtext);
+            //SearchBooks(searchtext);
+            //SearchHouses(searchtext);
+        }
+        
+        public void ListPreviews(int cnt)
         {
             if (cnt != lastClicked)
             {
@@ -58,31 +61,43 @@ namespace TXC54G_HF.ViewModels
                     break;
             }
         }
-        public async void ListNewPageOfPreviews()
+        public void ListNewPageOfPreviews()
         {
             ListPreviews(lastClicked);
+        }
+        private async void SearchCharacters(string searchtext)
+        {
+            var previewitems = await CharacterService.Instance.GetCharactersPreviewAsyncFromName(searchtext);
+            RepopulateListitems(previewitems);
+        }
+        private async void SearchBooks(string searchtext)
+        {
+            var previewitems = await BookService.Instance.GetBooksPreviewAsyncFromName(searchtext);
+            RepopulateListitems(previewitems);
+        }
+        private async void SearchHouses(string searchtext)
+        {
+            var previewitems = await CharacterService.Instance.GetCharactersPreviewAsyncFromName(searchtext);
+            RepopulateListitems(previewitems);
         }
         private async void ListCharacters()
         {
             var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync(page);
-            listitems.Clear();
-            foreach (var p in previewitems)
-            {
-                listitems.Add(p);
-            }
+            RepopulateListitems(previewitems);
         }
         private async void ListHouses()
         {
             var previewitems = await HouseService.Instance.GetHousesPreviewAsync(page);
-            listitems.Clear();
-            foreach (var p in previewitems)
-            {
-                listitems.Add(p);
-            }
+            RepopulateListitems(previewitems);
         }
         private async void ListBooks()
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsync(page);
+            RepopulateListitems(previewitems);
+        }
+
+        private void RepopulateListitems(IReadOnlyCollection<BaseHelper> previewitems) //IReadOnlyCollection, mert nem írom át a paramétert és így elfogad Generikus típusnak leszármazottat is.
+        {
             listitems.Clear();
             foreach (var p in previewitems)
             {

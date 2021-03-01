@@ -44,8 +44,8 @@ namespace TXC54G_HF
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var clicked = (CharacterHelper)e.ClickedItem;
-            this.Frame.Navigate(typeof(DetailsPage), clicked.name);
+            var clicked = (BaseHelper)e.ClickedItem;
+            this.Frame.Navigate(typeof(DetailsPage), clicked.url);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

@@ -36,7 +36,7 @@ namespace TXC54G_HF
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Test(e.Parameter.ToString());
+            ViewModel.ShowDetails(e.Parameter.ToString());
         }
     }
 }

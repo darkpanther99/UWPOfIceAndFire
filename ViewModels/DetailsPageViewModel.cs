@@ -11,27 +11,47 @@ namespace TXC54G_HF.ViewModels
 {
     class DetailsPageViewModel
     {
-        private BookService bookservice = BookService.Instance;
-        private CharacterService characterService = CharacterService.Instance;
-        private List<Book> books = new List<Book>();
-        private List<Character> characters = new List<Character>();
-        public Character character { get; set; } = new Character() { name = "jani" };
+        public Character character { get; set; } = new Character() { name = "karakter" };
+        public House house { get; set; } = new House() { name = "haz" };
+        public Book book { get; set; } = new Book() { name = "konyv" };
 
-        public async void Test(string searchstr)
+        public async void ShowDetails(string searchstr)
         {
-            var temp = await characterService.GetCharactersAsyncFromName(searchstr);
-            Debug.WriteLine(temp[0].name);
-            character = temp[0];
+            if (searchstr.Contains("characters"))
+            {
+                var charact = await GetCharacter(searchstr);
+                character.name = charact.name;
+                character.born = charact.born;
+            }
+            else if (searchstr.Contains("houses"))
+            {
+                house = await GetHouse(searchstr);
+                Debug.WriteLine(house.name);
+            }
+            else if (searchstr.Contains("books"))
+            {
+                book = await GetBook(searchstr);
+                Debug.WriteLine(book.name);
+            }
+            else
+            {
+                throw new Exception("Se nem karakter, se nem ház, se nem könyv? Akkor mi?");
+            }
         }
 
-        private async Task<Character> GetCharacter(int id)
+        private async Task<Character> GetCharacter(string str)
         {
-            return await characterService.GetCharacterAsync(id);
+            return await CharacterService.Instance.GetCharacterAsyncFromFullUrl(new Uri(str), depth:0);
         }
 
-        private async Task<Book> GetBook(int id)
+        private async Task<Book> GetBook(string str)
         {
-            return await bookservice.GetBookAsync(id);
+            return await BookService.Instance.GetBookAsyncFromFullUrl(new Uri(str), depth: 0);
+        }
+
+        private async Task<House> GetHouse(string str)
+        {
+            return await HouseService.Instance.GetHouseAsyncFromFullUrl(new Uri(str), depth: 0);
         }
     }
 }

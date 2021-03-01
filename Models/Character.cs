@@ -27,7 +27,17 @@ namespace TXC54G_HF.Models
         }
         public string gender { get; set; }
         public string culture { get; set; }
-        public string born { get; set; }
+        private string _born;
+        public string born { get { return _born; }
+            set
+            {
+                if (_born != value)
+                {
+                    _born = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(born)));
+                }
+            }
+        }
         public string died { get; set; }
         public string[] titles { get; set; }
         public string[] aliases { get; set; }
