@@ -31,10 +31,13 @@ namespace TXC54G_HF.ViewModels
         public void previousPage()
         {
             page--;
+            if (page < 1)
+            {
+                initPage();
+            }
         }
         public async void ListPreviews(int cnt)
         {
-            listitems.Clear();
             if (cnt != lastClicked)
             {
                 initPage();
@@ -55,9 +58,14 @@ namespace TXC54G_HF.ViewModels
                     break;
             }
         }
+        public async void ListNewPageOfPreviews()
+        {
+            ListPreviews(lastClicked);
+        }
         private async void ListCharacters()
         {
             var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync(page);
+            listitems.Clear();
             foreach (var p in previewitems)
             {
                 listitems.Add(p);
@@ -66,6 +74,7 @@ namespace TXC54G_HF.ViewModels
         private async void ListHouses()
         {
             var previewitems = await HouseService.Instance.GetHousesPreviewAsync(page);
+            listitems.Clear();
             foreach (var p in previewitems)
             {
                 listitems.Add(p);
@@ -74,6 +83,7 @@ namespace TXC54G_HF.ViewModels
         private async void ListBooks()
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsync(page);
+            listitems.Clear();
             foreach (var p in previewitems)
             {
                 listitems.Add(p);

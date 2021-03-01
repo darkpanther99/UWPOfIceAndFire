@@ -66,11 +66,13 @@ namespace TXC54G_HF
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             ViewModel.previousPage();
+            ViewModel.ListNewPageOfPreviews();
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             ViewModel.nextPage();
+            ViewModel.ListNewPageOfPreviews();
         }
     }
 }
