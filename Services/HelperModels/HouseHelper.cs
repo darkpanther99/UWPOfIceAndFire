@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
-    class HouseHelper
+    class HouseHelper : BaseHelper
     {
-        public string url { get; set; }
-        public string name { get; set; }
         public string region { get; set; }
         public string coatOfArms { get; set; }
         public string words { get; set; }

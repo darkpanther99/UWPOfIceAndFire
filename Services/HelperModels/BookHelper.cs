@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
-    class BookHelper
+    class BookHelper : BaseHelper
     {
-        public string url { get; set; }
-        public string name { get; set; }
         public string isbn { get; set; }
         public string[] authors { get; set; }
         public int numberOfPages { get; set; }

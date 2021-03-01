@@ -27,6 +27,15 @@ namespace TXC54G_HF.Services
         {
             return await GetCharacterAsyncFromFullUrl(new Uri(baseUrl, $"characters/{id}"), depth: 0);
         }
+        public async Task<List<CharacterHelper>> GetCharactersPreviewAsync()
+        {
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters"));
+        }
+
+        public async Task<List<CharacterHelper>> GetCharacterPreviewAsync(string name)
+        {
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}"));
+        }
 
         public async Task<List<Character>> GetCharactersAsyncFromName(string name)
         {

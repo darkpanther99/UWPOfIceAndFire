@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
-    class CharacterHelper
+    class CharacterHelper : BaseHelper
     {
-        public string url { get; set; }
-        public string name { get; set; }
         public string gender { get; set; }
         public string culture { get; set; }
         public string born { get; set; }

@@ -96,5 +96,16 @@ namespace TXC54G_HF
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        public static bool TryGoBack()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame.CanGoBack)
+            {
+                rootFrame.GoBack();
+                return true;
+            }
+            return false;
+        }
     }
 }

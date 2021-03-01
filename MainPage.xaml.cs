@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using TXC54G_HF.Models;
 using TXC54G_HF.Services;
+using TXC54G_HF.Services.HelperModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,43 +27,40 @@ namespace TXC54G_HF
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private BookService bookservice = BookService.Instance;
-        private CharacterService characterService = CharacterService.Instance;
-        private List<Book> books = new List<Book>();
-        private List<Character> characters = new List<Character>();
-        public Character character { get; set; }
         public MainPage()
         {
             this.InitializeComponent();
-            character = new Character()
-            { name = "Jani" };
-            DataContext = this;
-            //book = GetBook(1).Result;
-            Test();
-
-
         }
 
-        private async void Test()
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //books.Add(await GetBook(1));
-            //characters.Add(await GetCharacter(2));
-            //Debug.WriteLine(characters[0].name);
-            //character = characters[0];
-            //var temp = await GetCharacter(2);
-            var temp = await characterService.GetCharactersAsyncFromName("Jon Snow");
-            Debug.WriteLine(temp[0].name);
-            character.name = temp[0].name;
+            ViewModel.Search(Search.Text);
         }
 
-        private async Task<Character> GetCharacter(int id)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            return await characterService.GetCharacterAsync(id);
+            this.Frame.Navigate(typeof(DetailsPage), Search.Text);
         }
 
-        private async Task<Book> GetBook(int id)
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            return await bookservice.GetBookAsync(id);
+            var clicked = (CharacterHelper)e.ClickedItem;
+            this.Frame.Navigate(typeof(DetailsPage), clicked.name);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ListPreviews(0);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ListPreviews(1);
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ListPreviews(2);
         }
     }
 }

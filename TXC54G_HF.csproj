@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -129,10 +132,13 @@
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\BookService.cs" />
     <Compile Include="Services\CharacterService.cs" />
+    <Compile Include="Services\HelperModels\BaseHelper.cs" />
     <Compile Include="Services\HelperModels\BookHelper.cs" />
     <Compile Include="Services\HelperModels\CharacterHelper.cs" />
     <Compile Include="Services\HelperModels\HouseHelper.cs" />
     <Compile Include="Services\HouseService.cs" />
+    <Compile Include="ViewModels\DetailsPageViewModel.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -154,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -168,7 +178,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

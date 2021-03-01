@@ -5,12 +5,30 @@
     xmlns:local="using:TXC54G_HF"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:TXC54G_HF.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.DataContext>
+        <vm:MainPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
     <Grid>
-        
-        <TextBox Margin="0,0,0,5" Text="{Binding character.name}"/>
+        <ListView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left" Height="608" Margin="445,125,0,0" VerticalAlignment="Top" Width="280" ItemsSource="{Binding listitems}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding name}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBox Margin="190,206,1199,728" Text="{Binding character.name}"/>
+        <TextBox Margin="0,36,676,932" x:Name="Search" HorizontalAlignment="Right" Width="379"/>
+        <Button Content="Search" Margin="829,36,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="List Books" Margin="829,100,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+        <Button Content="List Houses" Margin="829,200,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
+        <Button Content="List Characters" Margin="829,300,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
+        <HyperlinkButton Content="Show Details" Margin="829,429,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
 
     </Grid>
 </Page>

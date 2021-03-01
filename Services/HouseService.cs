@@ -29,6 +29,10 @@ namespace TXC54G_HF.Services
         {
             return await GetHouseAsyncFromFullUrl(new Uri(baseUrl, $"houses/{id}"), depth: 0);
         }
+        public async Task<List<HouseHelper>> GetHousesPreviewAsync()
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses"));
+        }
 
         public async Task<House> GetHouseAsyncFromFullUrl(Uri uri, int depth)
         {
