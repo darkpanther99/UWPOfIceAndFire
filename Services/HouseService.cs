@@ -24,7 +24,8 @@ namespace TXC54G_HF.Services
                 return instance;
             }
         }
-        
+
+
         public async Task<House> GetHouseAsync(int id)
         {
             return await GetHouseAsyncFromFullUrl(new Uri(baseUrl, $"houses/{id}"), depth: 0);

@@ -9,12 +9,13 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <Grid>
-        <ListView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left" Height="608" Margin="445,125,0,0" VerticalAlignment="Top" Width="280" ItemsSource="{Binding listitems}">
+        <ListView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left" Height="608" Margin="905,131,0,0" VerticalAlignment="Top" Width="280" ItemsSource="{Binding listitems}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding name}" />
@@ -22,15 +23,53 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <TextBox Margin="190,206,1199,728" Text="UNUSED"/>
-        <TextBox Margin="0,36,676,932" x:Name="Search" HorizontalAlignment="Right" Width="379"/>
-        <Button Content="Search" Margin="829,36,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Content="List Books" Margin="829,100,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Button Content="List Houses" Margin="829,200,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
-        <Button Content="List Characters" Margin="829,300,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
-        <HyperlinkButton Content="Show Details" Margin="829,429,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Button Content="+" Margin="865,568,0,0" VerticalAlignment="Top" Click="Button_Click_6"/>
-        <Button Content="-" Margin="895,658,0,0" VerticalAlignment="Top" Click="Button_Click_5"/>
 
+        <NavigationView x:Name="NavBarSide" >
+            <NavigationView.MenuItems>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <Button Content="List Books"  VerticalAlignment="Top" Click="Button_Click_2"/>
+                <Button Content="List Houses" VerticalAlignment="Top" Click="Button_Click_3"/>
+                <Button Content="List Characters" VerticalAlignment="Top" Click="Button_Click_4"/>
+            </NavigationView.MenuItems>
+
+        </NavigationView>
+        <NavigationView x:Name="NavBarTop">
+            <NavigationView.MenuItems>
+                <TextBox Width="300" x:Name="Search"/>
+                <Button Content="Search" VerticalAlignment="Top" Click="Button_Click"/>
+                <Button Content="List Books"  VerticalAlignment="Top" Click="Button_Click_2"/>
+                <Button Content="List Houses" VerticalAlignment="Top" Click="Button_Click_3"/>
+                <Button Content="List Characters" VerticalAlignment="Top" Click="Button_Click_4"/>
+            </NavigationView.MenuItems>
+            <Image HorizontalAlignment="Left" Height="200" Margin="0,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png"/>
+        </NavigationView>
+
+
+        <TextBox Margin="1326,924,63,10" Text="UNUSED"/>
+
+
+        <HyperlinkButton Content="Show Details" Margin="1286,815,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content=">" Margin="1211,131,0,0" VerticalAlignment="Top" Click="Button_Click_6"/>
+        <Button Content="&lt;" Margin="829,131,0,0" VerticalAlignment="Top" Click="Button_Click_5"/>
+
+
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                        MinWindowWidth="{x:Bind NavBarTop.CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="NavBarTop.PaneDisplayMode" Value="Top"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
