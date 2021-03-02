@@ -137,6 +137,9 @@
     <Compile Include="Services\HelperModels\CharacterHelper.cs" />
     <Compile Include="Services\HelperModels\HouseHelper.cs" />
     <Compile Include="Services\HouseService.cs" />
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
   </ItemGroup>
@@ -146,6 +149,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\baratheonlogo.png" />
     <Content Include="Assets\lannisterlogo.png" />
     <Content Include="Assets\starklogo.png" />
     <Content Include="Properties\Default.rd.xml" />
@@ -169,6 +173,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

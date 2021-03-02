@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="TXC54G_HF.App">
       <uap:VisualElements
-        DisplayName="TXC54G_HF"
+        DisplayName="Game of Thrones"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="TXC54G_HF"

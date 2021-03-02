@@ -29,34 +29,34 @@ namespace TXC54G_HF.Services
         }
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsync(int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?page={page}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?page={page}&pageSize=30"));
         }
 
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromName(string name)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}&pageSize=30"));
         }
 
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromGender(string gender, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?gender={gender}&page={page}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?gender={gender}&page={page}&pageSize=30"));
         }
 
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromCulture(string culture, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?culture={culture}&page={page}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?culture={culture}&page={page}&pageSize=30"));
         }
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromBirth(string birth, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?born={birth}&page={page}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?born={birth}&page={page}&pageSize=30"));
         }
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromDeath(string death, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?died={death}&page={page}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?died={death}&page={page}&pageSize=30"));
         }
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromIsAlive(string isalive, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?isAlive={isalive}&page={page}"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?isAlive={isalive}&page={page}&pageSize=30"));
         }
 
         public async Task<List<Character>> GetCharactersAsyncFromName(string name)

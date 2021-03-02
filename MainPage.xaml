@@ -14,20 +14,20 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Page.Resources>
-        <local:PrependStringConverter x:Key="PrependStringConverter" />
-    </Page.Resources>
 
     <Grid>
-        <ListView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left" Height="608" Margin="905,131,0,0" VerticalAlignment="Top" Width="280" ItemsSource="{Binding listitems}">
-            <ListView.ItemTemplate>
+        <GridView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left"  Margin="640,250,0,0" VerticalAlignment="Top" ItemsSource="{Binding listitems}">
+            <GridView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding name}" />
+                    <TextBlock Height = "30" Width="400" Text="{Binding name}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </GridView.ItemTemplate>
+        </GridView>
+       
 
         <CommandBar DefaultLabelPosition="Right">
+            <AppBarButton Icon="Previous" VerticalAlignment="Top" Click="Button_Click_5"/>
+            <AppBarButton Icon="Next" VerticalAlignment="Top" Click="Button_Click_6"/>
             <AppBarElementContainer Width="300" >
                 <TextBox Width="300" Height="40" x:Name="Search"/>
             </AppBarElementContainer>
@@ -35,39 +35,22 @@
             <AppBarButton Icon="List" Label="List" Click="ListAppBarButton_Click"/>
 
             <CommandBar.Content>
-                <TextBlock Text="{Binding currentlyBrowsing, ConverterParameter=Currently browsing:, Converter={StaticResource PrependStringConverter}}" Margin="320, 12, 0, 0"/>
+                <TextBlock x:Name="ContentText" Text="Currently browsing: Books" Margin="320, 12, 0, 0"/>
             </CommandBar.Content>
-
         </CommandBar>
 
-        <NavigationView x:Name="NavBarSide" >
+        <NavigationView x:Name="NavBarSide" ItemInvoked="NavigationView_ItemInvoked">
             <NavigationView.MenuItems>
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
-                <NavigationViewItem Content="Browse Books"  VerticalAlignment="Top" Tapped="BookButton_Click_2"/>
-                <NavigationViewItem Content="Browse Houses" VerticalAlignment="Top" Tapped="HouseButton_Click_3"/>
-                <NavigationViewItem Content="Browse Characters" VerticalAlignment="Top" Tapped="CharacterButton_Click_4"/>
+                <NavigationViewItem Icon="Bookmarks" Content="Browse Books"  VerticalAlignment="Top" Tapped="BookButton_Click_2"/>
+                <NavigationViewItem Icon="Home" Content="Browse Houses" VerticalAlignment="Top" Tapped="HouseButton_Click_3"/>
+                <NavigationViewItem Icon="People" Content="Browse Characters" VerticalAlignment="Top" Tapped="CharacterButton_Click_4"/>
             </NavigationView.MenuItems>
-
-            
-
         </NavigationView>
-        <Image HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png"/>
-        
+        <Image x:Name="HouseImage" HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png" Loaded="Image_Loaded"/>
 
-
-
-        <TextBox Margin="1326,924,63,10" Text="UNUSED"/>
-
-
-        <HyperlinkButton Content="Show Details" Margin="1286,815,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Button Content=">" Margin="1211,131,0,0" VerticalAlignment="Top" Click="Button_Click_6"/>
-        <Button Content="&lt;" Margin="829,131,0,0" VerticalAlignment="Top" Click="Button_Click_5"/>
-
-
-
-        
     </Grid>
 </Page>

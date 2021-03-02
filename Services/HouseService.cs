@@ -32,19 +32,19 @@ namespace TXC54G_HF.Services
         }
         public async Task<List<HouseHelper>> GetHousesPreviewAsync(int page)
         {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?page={page}"));
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?page={page}&pageSize=30"));
         }
         public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromName(string name)
         {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?name={name}"));
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?name={name}&pageSize=30"));
         }
         public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromRegion(string region, int page)
         {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?region={region}&page={page}"));
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?region={region}&page={page}&pageSize=30"));
         }
         public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromWords(string words, int page)
         {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?words={words}&page={page}"));
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?words={words}&page={page}&pageSize=30"));
         }
 
         public async Task<House> GetHouseAsyncFromFullUrl(Uri uri, int depth)

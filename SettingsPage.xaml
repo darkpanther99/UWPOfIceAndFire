@@ -1,0 +1,37 @@
+﻿<Page
+    x:Class="TXC54G_HF.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TXC54G_HF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <NavigationView x:Name="NavBarSide" IsBackEnabled="True" BackRequested="NavBarSide_BackRequested">
+            <NavigationView.MenuItems>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
+                <NavigationViewItem Icon="Bookmarks" Content="Browse Books"  VerticalAlignment="Top" />
+                <NavigationViewItem Icon="Home" Content="Browse Houses" VerticalAlignment="Top" />
+                <NavigationViewItem Icon="People" Content="Browse Characters" VerticalAlignment="Top"/>
+            </NavigationView.MenuItems>
+        </NavigationView>
+        <Image HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png" Loaded="Image_Loaded"/>
+
+    <muxc:RadioButtons Header="Favourite House:"
+                SelectedIndex="0"
+                Margin="320,0,0,0"
+                       SelectionChanged="RadioButtons_SelectionChanged">
+        <x:String>Stark</x:String>
+        <x:String>Lannister</x:String>
+        <x:String>Baratheon</x:String>
+    </muxc:RadioButtons>
+
+
+    </Grid>
+</Page>
