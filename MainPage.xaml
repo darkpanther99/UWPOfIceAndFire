@@ -14,6 +14,10 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
+    <Page.Resources>
+        <local:PrependStringConverter x:Key="PrependStringConverter" />
+    </Page.Resources>
+
     <Grid>
         <ListView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left" Height="608" Margin="905,131,0,0" VerticalAlignment="Top" Width="280" ItemsSource="{Binding listitems}">
             <ListView.ItemTemplate>
@@ -23,6 +27,18 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <CommandBar DefaultLabelPosition="Right">
+            <AppBarElementContainer Width="300" >
+                <TextBox Width="300" Height="40" x:Name="Search"/>
+            </AppBarElementContainer>
+            <AppBarButton Icon="Find"  Label="Search" Click="SearchButton_Click"/>
+            <AppBarButton Icon="List" Label="List" Click="ListAppBarButton_Click"/>
+
+            <CommandBar.Content>
+                <TextBlock Text="{Binding currentlyBrowsing, ConverterParameter=Currently browsing:, Converter={StaticResource PrependStringConverter}}" Margin="320, 12, 0, 0"/>
+            </CommandBar.Content>
+
+        </CommandBar>
 
         <NavigationView x:Name="NavBarSide" >
             <NavigationView.MenuItems>
@@ -30,22 +46,17 @@
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
                 <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
-                <Button Content="List Books"  VerticalAlignment="Top" Click="Button_Click_2"/>
-                <Button Content="List Houses" VerticalAlignment="Top" Click="Button_Click_3"/>
-                <Button Content="List Characters" VerticalAlignment="Top" Click="Button_Click_4"/>
+                <NavigationViewItem Content="Browse Books"  VerticalAlignment="Top" Tapped="BookButton_Click_2"/>
+                <NavigationViewItem Content="Browse Houses" VerticalAlignment="Top" Tapped="HouseButton_Click_3"/>
+                <NavigationViewItem Content="Browse Characters" VerticalAlignment="Top" Tapped="CharacterButton_Click_4"/>
             </NavigationView.MenuItems>
 
+            
+
         </NavigationView>
-        <NavigationView x:Name="NavBarTop">
-            <NavigationView.MenuItems>
-                <TextBox Width="300" x:Name="Search"/>
-                <Button Content="Search" VerticalAlignment="Top" Click="Button_Click"/>
-                <Button Content="List Books"  VerticalAlignment="Top" Click="Button_Click_2"/>
-                <Button Content="List Houses" VerticalAlignment="Top" Click="Button_Click_3"/>
-                <Button Content="List Characters" VerticalAlignment="Top" Click="Button_Click_4"/>
-            </NavigationView.MenuItems>
-            <Image HorizontalAlignment="Left" Height="200" Margin="0,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png"/>
-        </NavigationView>
+        <Image HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png"/>
+        
+
 
 
         <TextBox Margin="1326,924,63,10" Text="UNUSED"/>
@@ -57,19 +68,6 @@
 
 
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger
-                        MinWindowWidth="{x:Bind NavBarTop.CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-
-                    <VisualState.Setters>
-                        <Setter Target="NavBarTop.PaneDisplayMode" Value="Top"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        
     </Grid>
 </Page>

@@ -27,14 +27,17 @@ namespace TXC54G_HF
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private int mode = 0;
+        //private string currentlyBrowsing = "books";
         public MainPage()
         {
             this.InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Search(Search.Text);
+            ViewModel.Search(Search.Text, mode);
+            //ToHide.Visibility = Visibility.Collapsed;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -48,19 +51,22 @@ namespace TXC54G_HF
             this.Frame.Navigate(typeof(DetailsPage), clicked.url);
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void BookButton_Click_2(object sender, RoutedEventArgs e)
         {
-            ViewModel.ListPreviews(0);
+            mode = 0;
+            ViewModel.currentlyBrowsing = "books";
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void HouseButton_Click_3(object sender, RoutedEventArgs e)
         {
-            ViewModel.ListPreviews(1);
+            mode = 1;
+            ViewModel.currentlyBrowsing = "houses";
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void CharacterButton_Click_4(object sender, RoutedEventArgs e)
         {
-            ViewModel.ListPreviews(2);
+            mode = 2;
+            ViewModel.currentlyBrowsing = "characters";
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -73,6 +79,26 @@ namespace TXC54G_HF
         {
             ViewModel.nextPage();
             ViewModel.ListNewPageOfPreviews();
+        }
+
+        private void ListAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ListPreviews(mode);
+        }
+    }
+
+    //source: https://stackoverflow.com/questions/37087518/how-do-i-concat-string-with-the-content-which-is-a-binding-property-in-button-wh
+    public class PrependStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return (string)parameter + " " + (string)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            // implement for two-way convertion
+            throw new NotImplementedException();
         }
     }
 }

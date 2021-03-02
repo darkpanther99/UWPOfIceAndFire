@@ -16,6 +16,9 @@ namespace TXC54G_HF.ViewModels
         public ObservableCollection<BaseHelper> listitems { get; set; } = new ObservableCollection<BaseHelper>();
         private int page = 1;
         private int lastClicked = -1;
+        private Boolean lastCommandWasSearch = false;
+        private string lastSearchText = "";
+        public string currentlyBrowsing { get; set; } = "books";
         public void initPage()
         {
             page = 1;
@@ -32,15 +35,34 @@ namespace TXC54G_HF.ViewModels
                 initPage();
             }
         }
-        public void Search(string searchtext)
+        public void Search(string searchtext, int cnt)
         {
-            SearchCharacters(searchtext);
-            //SearchBooks(searchtext);
-            //SearchHouses(searchtext);
+            lastCommandWasSearch = true;
+            if (cnt != lastClicked)
+            {
+                initPage();
+            }
+            lastClicked = cnt;
+            switch (cnt)
+            {
+                case 0:
+                    SearchBooks(searchtext);
+                    break;
+                case 1:
+                    SearchHouses(searchtext);
+                    break;
+                case 2:
+                    SearchCharacters(searchtext);
+                    break;
+                default:
+                    break;
+            }
+            lastSearchText = searchtext;
         }
         
         public void ListPreviews(int cnt)
         {
+            lastCommandWasSearch = false;
             if (cnt != lastClicked)
             {
                 initPage();
@@ -63,23 +85,67 @@ namespace TXC54G_HF.ViewModels
         }
         public void ListNewPageOfPreviews()
         {
-            ListPreviews(lastClicked);
+            if (lastCommandWasSearch)
+            {
+                Search(lastSearchText, lastClicked);
+            }
+            else
+            {
+                ListPreviews(lastClicked);
+            }
         }
         private async void SearchCharacters(string searchtext)
         {
-            var previewitems = await CharacterService.Instance.GetCharactersPreviewAsyncFromName(searchtext);
+            var chsInstance = CharacterService.Instance;
+            var previewitems = await chsInstance.GetCharactersPreviewAsyncFromName(searchtext);
             RepopulateListitems(previewitems);
+            var previewcultures = await chsInstance.GetCharactersPreviewAsyncFromCulture(searchtext, page);
+            AppendToListitems(previewcultures);
+            var previewborn = await chsInstance.GetCharactersPreviewAsyncFromBirth(searchtext, page);
+            AppendToListitems(previewborn);
+            var previewdied = await chsInstance.GetCharactersPreviewAsyncFromDeath(searchtext, page);
+            AppendToListitems(previewdied);
+            if (searchtext.ToLower() == "true" || searchtext.ToLower() == "false")
+            {
+                var previewIsAlive = await chsInstance.GetCharactersPreviewAsyncFromIsAlive(searchtext, page);
+                AppendToListitems(previewIsAlive);
+            }
+            if (searchtext.ToLower() == "male" || searchtext.ToLower() == "female")
+            {
+                var previewgenders = await chsInstance.GetCharactersPreviewAsyncFromGender(searchtext, page);
+                AppendToListitems(previewgenders);
+            }
+            if (searchtext.ToLower() == "alive")
+            {
+                var previewIsAlive = await chsInstance.GetCharactersPreviewAsyncFromIsAlive("true", page);
+                AppendToListitems(previewIsAlive);
+            }
+            if (searchtext.ToLower() == "dead")
+            {
+                var previewIsAlive = await chsInstance.GetCharactersPreviewAsyncFromIsAlive("false", page);
+                AppendToListitems(previewIsAlive);
+            }
+
+
+
         }
         private async void SearchBooks(string searchtext)
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsyncFromName(searchtext);
             RepopulateListitems(previewitems);
         }
+
         private async void SearchHouses(string searchtext)
         {
-            var previewitems = await CharacterService.Instance.GetCharactersPreviewAsyncFromName(searchtext);
+            var hsInstance = HouseService.Instance;
+            var previewitems = await hsInstance.GetHousesPreviewAsyncFromName(searchtext);
             RepopulateListitems(previewitems);
+            var previewregions = await hsInstance.GetHousesPreviewAsyncFromRegion(searchtext, page);
+            AppendToListitems(previewregions);
+            var previewwords = await hsInstance.GetHousesPreviewAsyncFromWords(searchtext, page);
+            AppendToListitems(previewwords);
         }
+
         private async void ListCharacters()
         {
             var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync(page);
@@ -101,6 +167,22 @@ namespace TXC54G_HF.ViewModels
             listitems.Clear();
             foreach (var p in previewitems)
             {
+                if(p.name == "")
+                {
+                    p.name = "Unnamed";
+                }
+                listitems.Add(p);
+            }
+        }
+
+        private void AppendToListitems(IReadOnlyCollection<BaseHelper> previewitems)
+        {
+            foreach (var p in previewitems)
+            {
+                if (p.name == "")
+                {
+                    p.name = "Unnamed";
+                }
                 listitems.Add(p);
             }
         }
