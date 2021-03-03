@@ -78,6 +78,7 @@ namespace TXC54G_HF
             mode = 0;
             //ViewModel.currentlyBrowsing = "books";
             ContentText.Text = "Currently browsing: Books";
+            ViewModel.ListPreviews(mode);
         }
 
         private void HouseButton_Click_3(object sender, RoutedEventArgs e)
@@ -85,6 +86,7 @@ namespace TXC54G_HF
             mode = 1;
             //ViewModel.currentlyBrowsing = "houses";
             ContentText.Text = "Currently browsing: Houses";
+            ViewModel.ListPreviews(mode);
         }
 
         private void CharacterButton_Click_4(object sender, RoutedEventArgs e)
@@ -92,6 +94,7 @@ namespace TXC54G_HF
             mode = 2;
             //ViewModel.currentlyBrowsing = "characters";
             ContentText.Text = "Currently browsing: Characters";
+            ViewModel.ListPreviews(mode);
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -117,6 +120,12 @@ namespace TXC54G_HF
             {
                 this.Frame.Navigate(typeof(SettingsPage));
             }
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ViewModel.ListPreviews(mode);
+            //TODO app startkor ne legyen semmi, egyébként az legyen, ami előzőleg volt.
         }
     }
 }

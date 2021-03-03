@@ -13,10 +13,114 @@
         <vm:DetailsPageViewModel x:Name="ViewModel"/>
     </Page.DataContext>
     <Grid>
-        <TextBlock Text="{Binding character.name, Mode=OneWay}" Margin="184,23,1178,848"/>
-        <TextBlock Text="{Binding character.born, Mode=OneWay}" Margin="162,187,1212,666"/>
+        <CommandBar DefaultLabelPosition="Right">
+            <CommandBar.Content>
+                <TextBlock x:Name="ContentText" Text="Character info" Margin="320, 12, 0, 0"/>
+            </CommandBar.Content>
+        </CommandBar>
 
-            <HyperlinkButton Content="Show Details" Margin="1000,664,0,0" VerticalAlignment="Top" Click="HyperlinkButton_Click" IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}"/>
+       
+        
+        <StackPanel Margin="400,100,0,0">
+            <TextBlock Text="Personal details:" FontSize="25"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Name:" />
+                <TextBlock Text="{Binding character.name, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Gender:" />
+                <TextBlock Text="{Binding character.gender, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Born:" />
+                <TextBlock Text="{Binding character.born, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Died:" />
+                <TextBlock Text="{Binding character.died, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Titles:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding titles}">
+                </ListView>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Aliases:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding aliases}">
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="800,100,0,0">
+            <TextBlock Text="Connections:" FontSize="25"/>
+            <StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped">
+                <TextBlock Height="50" Width="100" Text="Father:" />
+                <TextBlock Text="{Binding character.father.name, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Height="50" Width="100" Text="Mother:" />
+                <TextBlock Text="{Binding character.mother.name, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Height="50" Width="100" Text="Spouse:" />
+                <TextBlock Text="{Binding character.spouse.name, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Culture:" />
+                <TextBlock Text="{Binding character.culture, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Allegiances:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding allegiances}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock  Height = "50" Width="400" Text="{Binding name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="1200,100,0,0">
+            <TextBlock Text="Appearances:" FontSize="25"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Books:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding books}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock  Height = "50" Width="400" Text="{Binding name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="povBooks:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding povBooks}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock  Height = "50" Width="400" Text="{Binding name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Tv Series:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding tvSeries}">
+                </ListView>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="50" Width="100" Text="Played by:" />
+                <ListView SelectionMode="None" ItemsSource="{Binding playedBy}">
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+        
+
+        <NavigationView x:Name="NavBarSide" IsBackEnabled="True" BackRequested="NavBarSide_BackRequested" ItemInvoked="NavigationView_ItemInvoked">
+            <NavigationView.MenuItems>
+            </NavigationView.MenuItems>
+        </NavigationView>
+        <Image x:Name="HouseImage" HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png" Loaded="Image_Loaded"/>
 
     </Grid>
 </Page>

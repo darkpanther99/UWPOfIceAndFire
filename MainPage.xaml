@@ -29,7 +29,7 @@
             <AppBarButton Icon="Previous" VerticalAlignment="Top" Click="Button_Click_5"/>
             <AppBarButton Icon="Next" VerticalAlignment="Top" Click="Button_Click_6"/>
             <AppBarElementContainer Width="300" >
-                <TextBox Width="300" Height="40" x:Name="Search"/>
+                <TextBox Width="300" Height="40" x:Name="Search" PlaceholderText="Search"/>
             </AppBarElementContainer>
             <AppBarButton Icon="Find"  Label="Search" Click="SearchButton_Click"/>
             <AppBarButton Icon="List" Label="List" Click="ListAppBarButton_Click"/>

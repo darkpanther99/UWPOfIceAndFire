@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -101,6 +102,8 @@ namespace TXC54G_HF.Services
                 Book pb = await bookService.GetBookAsyncFromFullUrl(new Uri(povbook), depth + 1);
                 books.Add(pb);
             }
+            Debug.WriteLine(characterhelper.father);
+            Debug.WriteLine("asd");
             
 
             return new Character()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,14 @@ namespace TXC54G_HF.ViewModels
 {
     class DetailsPageViewModel
     {
-        public Character character { get; set; } = new Character() { name = "karakter" };
+        public Character character { get; set; } = new Character();
+        public ObservableCollection<string> titles { get; set; }  = new ObservableCollection<string>();
+        public ObservableCollection<string> aliases { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<House> allegiances { get; set; } = new ObservableCollection<House>();
+        public ObservableCollection<Book> books { get; set; } = new ObservableCollection<Book>();
+        public ObservableCollection<Book> povBooks { get; set; } = new ObservableCollection<Book>();
+        public ObservableCollection<string> tvSeries { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> playedBy { get; set; } = new ObservableCollection<string>();
         public House house { get; set; } = new House() { name = "haz" };
         public Book book { get; set; } = new Book() { name = "konyv" };
 
@@ -20,8 +28,47 @@ namespace TXC54G_HF.ViewModels
             if (searchstr.Contains("characters"))
             {
                 var charact = await GetCharacter(searchstr);
+                character.url = charact.url;
                 character.name = charact.name;
+                character.gender = charact.gender;
+                character.culture = charact.culture;
                 character.born = charact.born;
+                character.died = charact.died;
+                //character.titles = charact.titles;
+                titles.Clear();
+                foreach (var title in charact.titles)
+                {
+                    titles.Add(title);
+                }
+                //character.aliases = charact.aliases;
+                aliases.Clear();
+                foreach (var alias in charact.aliases)
+                {
+                    aliases.Add(alias);
+                }
+                character.father = charact.father;
+                character.mother = charact.mother;
+                character.spouse = charact.spouse;
+                foreach (var allegiance in charact.allegiances)
+                {
+                    allegiances.Add(allegiance);
+                }
+                foreach (var book in charact.books)
+                {
+                    books.Add(book);
+                }
+                foreach (var book in charact.povBooks)
+                {
+                    povBooks.Add(book);
+                }
+                foreach (var tv in charact.tvSeries)
+                {
+                    tvSeries.Add(tv);
+                }
+                foreach (var actor in charact.playedBy)
+                {
+                    playedBy.Add(actor);
+                }
             }
             else if (searchstr.Contains("houses"))
             {

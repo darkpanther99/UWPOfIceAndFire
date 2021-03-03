@@ -6,27 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:vm="using:TXC54G_HF.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <NavigationView x:Name="NavBarSide" IsBackEnabled="True" BackRequested="NavBarSide_BackRequested">
-            <NavigationView.MenuItems>
-                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
-                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
-                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
-                <MenuBarItem VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" BorderThickness="0"/>
-                <NavigationViewItem Icon="Bookmarks" Content="Browse Books"  VerticalAlignment="Top" />
-                <NavigationViewItem Icon="Home" Content="Browse Houses" VerticalAlignment="Top" />
-                <NavigationViewItem Icon="People" Content="Browse Characters" VerticalAlignment="Top"/>
-            </NavigationView.MenuItems>
-        </NavigationView>
-        <Image HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png" Loaded="Image_Loaded"/>
+    <Page.DataContext>
+        <vm:SettingsPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
 
-    <muxc:RadioButtons Header="Favourite House:"
-                SelectedIndex="0"
-                Margin="320,0,0,0"
-                       SelectionChanged="RadioButtons_SelectionChanged">
+    <Grid>
+
+        <CommandBar DefaultLabelPosition="Right">
+            <CommandBar.Content>
+                <TextBlock x:Name="ContentText" Text="Choose your favourite house!" Margin="320, 12, 0, 0"/>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <NavigationView x:Name="NavBarSide" IsBackEnabled="True" BackRequested="NavBarSide_BackRequested">
+        </NavigationView>
+        <Image HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="{Binding imageitem.Image, Mode=OneWay}" />
+
+        
+
+        <muxc:RadioButtons Header="Favourite House:"
+                       Margin="350,100,0,0"
+                       SelectionChanged="RadioButtons_SelectionChanged"
+                       x:Name = "HouseButtons">
         <x:String>Stark</x:String>
         <x:String>Lannister</x:String>
         <x:String>Baratheon</x:String>
