@@ -22,7 +22,7 @@
        
         
         <StackPanel Margin="400,100,0,0">
-            <TextBlock Text="Personal details:" FontSize="25"/>
+            <TextBlock Text="Personal details:" FontSize="25" Margin="0,0,0,30"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Height="50" Width="100" Text="Name:" />
                 <TextBlock Text="{Binding character.name, Mode=OneWay}" />
@@ -40,19 +40,29 @@
                 <TextBlock Text="{Binding character.died, Mode=OneWay}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="Titles:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Titles:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding titles}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="50" Width="600" Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="Aliases:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Aliases:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding aliases}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="50" Width="300" Text="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Margin="800,100,0,0">
-            <TextBlock Text="Connections:" FontSize="25"/>
+        <StackPanel Margin="900,100,0,0">
+            <TextBlock Text="Connections:" FontSize="25" Margin="0,0,0,30"/>
             <StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped">
                 <TextBlock Height="50" Width="100" Text="Father:" />
                 <TextBlock Text="{Binding character.father.name, Mode=OneWay}" />
@@ -70,47 +80,57 @@
                 <TextBlock Text="{Binding character.culture, Mode=OneWay}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="Allegiances:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Allegiances:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding allegiances}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock  Height = "50" Width="400" Text="{Binding name}" />
+                            <TextBlock  Height = "50" Width="300" Text="{Binding name}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Margin="1200,100,0,0">
-            <TextBlock Text="Appearances:" FontSize="25"/>
+        <StackPanel Margin="1300,100,0,0">
+            <TextBlock Text="Appearances:" FontSize="25" Margin="0,0,0,30"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="Books:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Books:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding books}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock  Height = "50" Width="400" Text="{Binding name}" />
+                            <TextBlock  Height = "50" Width="300" Text="{Binding name}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="povBooks:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="povBooks:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding povBooks}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock  Height = "50" Width="400" Text="{Binding name}" />
+                            <TextBlock  Height = "50" Width="300" Text="{Binding name}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="Tv Series:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Tv Series:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding tvSeries}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="50" Width="300" Text="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="50" Width="100" Text="Played by:" />
+                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Played by:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding playedBy}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="50" Width="300" Text="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
         </StackPanel>
