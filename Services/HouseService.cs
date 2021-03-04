@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -53,40 +54,54 @@ namespace TXC54G_HF.Services
             {
                 return null;
             }
+
             CharacterService characterService = CharacterService.Instance;
             var househelper = await GetAsync<HouseHelper>(uri);
-            var cadetBranches = new List<House>();
-            var swornMembers = new List<Character>();
-            foreach (var cadetbranch in househelper.cadetBranches)
-            {
-                House h = await GetHouseAsyncFromFullUrl(new Uri(cadetbranch), depth + 1);
-                cadetBranches.Add(h);
-            }
-            foreach (var swornmember in househelper.swornMembers)
-            {
-                Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(swornmember), depth + 1);
-                swornMembers.Add(c);
-            }
 
-            return new House()
+            var house = new House()
             {
                 url = househelper.url,
                 name = househelper.name,
                 region = househelper.region,
                 coatOfArms = househelper.coatOfArms,
                 words = househelper.words,
-                titles = househelper.titles,
-                seats = househelper.seats,
+                titles = new ObservableCollection<string>(),
+                seats = new ObservableCollection<string>(),
                 currentLord = househelper.currentLord != "" ? await characterService.GetCharacterAsyncFromFullUrl(new Uri(househelper.currentLord), depth + 1) : null,
                 heir = househelper.heir != "" ? await characterService.GetCharacterAsyncFromFullUrl(new Uri(househelper.heir), depth + 1) : null,
                 overlord = househelper.overlord != "" ? await GetHouseAsyncFromFullUrl(new Uri(househelper.overlord), depth + 1) : null,
                 founded = househelper.founded,
                 founder = househelper.founder != "" ? await characterService.GetCharacterAsyncFromFullUrl(new Uri(househelper.founder), depth + 1) : null,
                 diedOut = househelper.diedOut,
-                ancestralWeapons = househelper.ancestralWeapons,
-                cadetBranches = cadetBranches,
-                swornMembers = swornMembers
+                ancestralWeapons = new ObservableCollection<string>(),
+                cadetBranches = new ObservableCollection<House>(),
+                swornMembers = new ObservableCollection<Character>()
             };
+
+            foreach (var title in househelper.titles)
+            {
+                house.titles.Add(title);
+            }
+            foreach (var seat in househelper.seats)
+            {
+                house.seats.Add(seat);
+            }
+            foreach (var wpn in househelper.ancestralWeapons)
+            {
+                house.ancestralWeapons.Add(wpn);
+            }
+            foreach (var cadetbranch in househelper.cadetBranches)
+            {
+                House h = await GetHouseAsyncFromFullUrl(new Uri(cadetbranch), depth + 1);
+                house.cadetBranches.Add(h);
+            }
+            foreach (var swornmember in househelper.swornMembers)
+            {
+                Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(swornmember), depth + 1);
+                house.swornMembers.Add(c);
+            }
+
+            return house;
         }
     }
 }

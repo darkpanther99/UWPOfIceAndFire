@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -19,8 +20,8 @@ namespace TXC54G_HF.Models
         public string coatOfArms { get { return _coatOfArms; } set { SetProperty(ref _coatOfArms, value); } }
         private string _words;
         public string words { get { return _words; } set { SetProperty(ref _words, value); } }
-        public string[] titles { get; set; }
-        public string[] seats { get; set; }
+        public ObservableCollection<string> titles { get; set; }
+        public ObservableCollection<string> seats { get; set; }
         private Character _currentLord;
         public Character currentLord { get { return _currentLord; } set { SetProperty(ref _currentLord, value); } }
         private Character _heir;
@@ -33,9 +34,9 @@ namespace TXC54G_HF.Models
         public Character founder { get { return _founder; } set { SetProperty(ref _founder, value); } }
         private string _diedOut;
         public string diedOut { get { return _diedOut; } set { SetProperty(ref _diedOut, value); } }
-        public string[] ancestralWeapons { get; set; }
-        public List<House> cadetBranches { get; set; }
-        public List<Character> swornMembers { get; set; }
+        public ObservableCollection<string> ancestralWeapons { get; set; }
+        public ObservableCollection<House> cadetBranches { get; set; }
+        public ObservableCollection<Character> swornMembers { get; set; }
 
         
     }

@@ -21,8 +21,18 @@ namespace TXC54G_HF.ViewModels
             tvSeries = new ObservableCollection<string>(),
             playedBy = new ObservableCollection<string>(),
         };
-        public House house { get; set; } = new House() { name = "haz" };
-        public Book book { get; set; } = new Book() { name = "konyv" };
+        public House house { get; set; } = new House() {
+            titles = new ObservableCollection<string>(),
+            seats = new ObservableCollection<string>(),
+            ancestralWeapons = new ObservableCollection<string>(),
+            cadetBranches = new ObservableCollection<House>(),
+            swornMembers = new ObservableCollection<Character>()
+        };
+        public Book book { get; set; } = new Book() { 
+            authors = new ObservableCollection<string>(),
+            characters = new ObservableCollection<Character>(),
+            povCharacters = new ObservableCollection<Character>()
+        };
 
         public async void ShowDetails(string searchstr)
         {
@@ -40,13 +50,28 @@ namespace TXC54G_HF.ViewModels
             else if (searchstr.Contains("books"))
             {
                 var bookhelper = await GetBook(searchstr);
-                //Debug.WriteLine(book.name);
-                book.name = bookhelper.name;
+                BuildBook(bookhelper);
             }
             else
             {
                 throw new Exception("Se nem karakter, se nem ház, se nem könyv? Akkor mi?");
             }
+        }
+
+
+        private void BuildBook(Book b)
+        {
+            book.url = b.url;
+            book.name = b.name;
+            book.isbn = b.isbn;
+            RepopulateObservableCollection(b.authors, book.authors);
+            book.numberOfPages = b.numberOfPages;
+            book.publisher = b.publisher;
+            book.country = b.country;
+            book.mediaType = b.mediaType;
+            book.released = b.released;
+            RepopulateObservableCollection(b.characters, book.characters);
+            RepopulateObservableCollection(b.povCharacters, book.povCharacters);
         }
 
         private void BuildHouse(House hous)
@@ -62,7 +87,11 @@ namespace TXC54G_HF.ViewModels
             house.founded = hous.founded;
             house.founder = hous.founder;
             house.diedOut = hous.diedOut;
-            // TODO: titles, seats, ancestral weapons, cadetbranches, swornmembers
+            RepopulateObservableCollection(hous.titles, house.titles);
+            RepopulateObservableCollection(hous.seats, house.seats);
+            RepopulateObservableCollection(hous.ancestralWeapons, house.ancestralWeapons);
+            RepopulateObservableCollection(hous.cadetBranches, house.cadetBranches);
+            RepopulateObservableCollection(hous.swornMembers, house.swornMembers);
         }
 
         private void BuildCharacter(Character charact)

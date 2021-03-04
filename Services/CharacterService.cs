@@ -81,9 +81,12 @@ namespace TXC54G_HF.Services
             {
                 return null;
             }
+
             HouseService houseService = HouseService.Instance;
             BookService bookService = BookService.Instance;
+
             var characterhelper = await GetAsync<CharacterHelper>(uri);
+
             var character = new Character()
             {
                 url = characterhelper.url,
