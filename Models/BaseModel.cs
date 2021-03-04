@@ -18,5 +18,6 @@ namespace TXC54G_HF.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             return true;
         }
+        public string url { get; set; }
     }
 }

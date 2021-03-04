@@ -58,6 +58,34 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        public async Task<string> GetURIStringFromName(string name)
+        {
+            var urls = new List<string>();
+            var books = await BookService.Instance.GetBooksPreviewAsyncFromName(name);
+            var characters = await CharacterService.Instance.GetCharactersPreviewAsyncFromName(name);
+            var houses = await HouseService.Instance.GetHousesPreviewAsyncFromName(name);
+
+            foreach (var b in books)
+            {
+                urls.Add(b.url);
+            }
+            foreach (var c in characters)
+            {
+                urls.Add(c.url);
+            }
+            foreach (var h in houses)
+            {
+                urls.Add(h.url);
+            }
+
+            foreach (var u in urls)
+            {
+                return u;
+            }
+
+            return "";
+        }
+
 
         private void BuildBook(Book b)
         {

@@ -68,10 +68,13 @@ namespace TXC54G_HF.Services
             {
                 book.authors.Add(author);
             }
+            int counter = 0;
             foreach (var bookcharacter in bookhelper.characters)
             {
                     Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookcharacter), depth + 1);
                     book.characters.Add(c);
+                counter++;
+                if (counter > 10) break;
             }
             foreach (var bookcharacter in bookhelper.povCharacters)
             {

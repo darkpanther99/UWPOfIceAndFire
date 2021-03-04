@@ -24,9 +24,20 @@ namespace TXC54G_HF
     /// </summary>
     public sealed partial class DetailsPage : Page
     {
+        private List<StackPanel> bookControls = new List<StackPanel>();
+        private List<StackPanel> characterControls = new List<StackPanel>();
+        private List<StackPanel> houseControls = new List<StackPanel>();
         public DetailsPage()
         {
             this.InitializeComponent();
+            bookControls.Add(Book1);
+            bookControls.Add(Book2);
+            bookControls.Add(Book3);
+            characterControls.Add(Character1);
+            characterControls.Add(Character2);
+            characterControls.Add(Character3);
+            houseControls.Add(House1);
+            houseControls.Add(House2);
         }
 
         private void NavBarSide_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
@@ -37,6 +48,22 @@ namespace TXC54G_HF
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            if (e.Parameter.ToString().Contains("characters"))
+            {
+                CharacterMode();
+            }
+            else if (e.Parameter.ToString().Contains("houses"))
+            {
+                HouseMode();
+            }
+            else if (e.Parameter.ToString().Contains("books"))
+            {
+                BookMode();
+            }
+            else
+            {
+                throw new Exception("Se nem karakter, se nem ház, se nem könyv? Akkor mi?");
+            }
             ViewModel.ShowDetails(e.Parameter.ToString());
         }
 
@@ -74,5 +101,79 @@ namespace TXC54G_HF
         {
             ViewModel.ShowDetails(ViewModel.character.father.url);
         }
+
+        private async void OnBookClick(object sender, TappedRoutedEventArgs e)
+        {
+            BookMode();
+            var src = sender as TextBlock;
+            var toShow = await ViewModel.GetURIStringFromName(src.Text);
+            ViewModel.ShowDetails(toShow);
+        }
+
+        private async void OnCharacterClick(object sender, TappedRoutedEventArgs e)
+        {
+            CharacterMode();
+            var src = sender as TextBlock;
+            var toShow = await ViewModel.GetURIStringFromName(src.Text);
+            ViewModel.ShowDetails(toShow);
+        }
+
+        private async void OnHouseClick(object sender, TappedRoutedEventArgs e)
+        {
+            HouseMode();
+            var src = sender as TextBlock;
+            var toShow = await ViewModel.GetURIStringFromName(src.Text);
+            ViewModel.ShowDetails(toShow);
+        }
+
+        private void BookMode()
+        {
+            foreach (var control in bookControls)
+            {
+                control.Visibility = Visibility.Visible;
+            }
+            foreach (var control in houseControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
+            foreach (var control in characterControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void HouseMode()
+        {
+            foreach (var control in bookControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
+            foreach (var control in houseControls)
+            {
+                control.Visibility = Visibility.Visible;
+            }
+            foreach (var control in characterControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void CharacterMode()
+        {
+            foreach (var control in bookControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
+            foreach (var control in houseControls)
+            {
+                control.Visibility = Visibility.Collapsed;
+            }
+            foreach (var control in characterControls)
+            {
+                control.Visibility = Visibility.Visible;
+            }
+        }
+
+
     }
 }
