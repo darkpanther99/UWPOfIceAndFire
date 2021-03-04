@@ -19,9 +19,9 @@
             </CommandBar.Content>
         </CommandBar>
 
-       
-        
-        <StackPanel Margin="400,100,0,0">
+        <TextBlock Margin="400,100,0,0" Text="{Binding book.name}"/>
+
+        <StackPanel Margin="400,100,0,0" Visibility="Collapsed">
             <TextBlock Text="Personal details:" FontSize="25" Margin="0,0,0,30"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Height="50" Width="100" Text="Name:" />
@@ -61,7 +61,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Margin="900,100,0,0">
+        <StackPanel Margin="900,100,0,0" Visibility="Collapsed">
             <TextBlock Text="Connections:" FontSize="25" Margin="0,0,0,30"/>
             <StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped">
                 <TextBlock Height="50" Width="100" Text="Father:" />
@@ -91,7 +91,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Margin="1300,100,0,0">
+        <StackPanel Margin="1300,100,0,0" Visibility="Collapsed">
             <TextBlock Text="Appearances:" FontSize="25" Margin="0,0,0,30"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Books:" />

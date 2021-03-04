@@ -72,13 +72,25 @@ namespace TXC54G_HF.ViewModels
             }
             else if (searchstr.Contains("houses"))
             {
-                house = await GetHouse(searchstr);
-                Debug.WriteLine(house.name);
+                var hous = await GetHouse(searchstr);
+                house.url = hous.url;
+                house.name = hous.name;
+                house.region = hous.region;
+                house.coatOfArms = hous.coatOfArms;
+                house.words = hous.words;
+                house.currentLord = hous.currentLord;
+                house.heir = hous.heir;
+                house.overlord = hous.overlord;
+                house.founded = hous.founded;
+                house.founder = hous.founder;
+                house.diedOut = hous.diedOut;
+                // TODO: titles, seats, ancestral weapons, cadetbranches, swornmembers
             }
             else if (searchstr.Contains("books"))
             {
-                book = await GetBook(searchstr);
-                Debug.WriteLine(book.name);
+                var bookhelper = await GetBook(searchstr);
+                //Debug.WriteLine(book.name);
+                book.name = bookhelper.name;
             }
             else
             {
