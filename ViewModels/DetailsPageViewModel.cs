@@ -12,14 +12,15 @@ namespace TXC54G_HF.ViewModels
 {
     class DetailsPageViewModel
     {
-        public Character character { get; set; } = new Character();
-        public ObservableCollection<string> titles { get; set; }  = new ObservableCollection<string>();
-        public ObservableCollection<string> aliases { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<House> allegiances { get; set; } = new ObservableCollection<House>();
-        public ObservableCollection<Book> books { get; set; } = new ObservableCollection<Book>();
-        public ObservableCollection<Book> povBooks { get; set; } = new ObservableCollection<Book>();
-        public ObservableCollection<string> tvSeries { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> playedBy { get; set; } = new ObservableCollection<string>();
+        public Character character { get; set; } = new Character() {
+            allegiances = new ObservableCollection<House>(), 
+            books = new ObservableCollection<Book>(),
+            povBooks = new ObservableCollection<Book>(),
+            titles = new ObservableCollection<string>(),
+            aliases = new ObservableCollection<string>(),
+            tvSeries = new ObservableCollection<string>(),
+            playedBy = new ObservableCollection<string>(),
+        };
         public House house { get; set; } = new House() { name = "haz" };
         public Book book { get; set; } = new Book() { name = "konyv" };
 
@@ -28,63 +29,13 @@ namespace TXC54G_HF.ViewModels
             if (searchstr.Contains("characters"))
             {
                 var charact = await GetCharacter(searchstr);
-                character.url = charact.url;
-                character.name = charact.name;
-                character.gender = charact.gender;
-                character.culture = charact.culture;
-                character.born = charact.born;
-                character.died = charact.died;
-                //character.titles = charact.titles;
-                titles.Clear();
-                foreach (var title in charact.titles)
-                {
-                    titles.Add(title);
-                }
-                //character.aliases = charact.aliases;
-                aliases.Clear();
-                foreach (var alias in charact.aliases)
-                {
-                    aliases.Add(alias);
-                }
-                character.father = charact.father;
-                character.mother = charact.mother;
-                character.spouse = charact.spouse;
-                foreach (var allegiance in charact.allegiances)
-                {
-                    allegiances.Add(allegiance);
-                }
-                foreach (var book in charact.books)
-                {
-                    books.Add(book);
-                }
-                foreach (var book in charact.povBooks)
-                {
-                    povBooks.Add(book);
-                }
-                foreach (var tv in charact.tvSeries)
-                {
-                    tvSeries.Add(tv);
-                }
-                foreach (var actor in charact.playedBy)
-                {
-                    playedBy.Add(actor);
-                }
+                BuildCharacter(charact);
+                
             }
             else if (searchstr.Contains("houses"))
             {
                 var hous = await GetHouse(searchstr);
-                house.url = hous.url;
-                house.name = hous.name;
-                house.region = hous.region;
-                house.coatOfArms = hous.coatOfArms;
-                house.words = hous.words;
-                house.currentLord = hous.currentLord;
-                house.heir = hous.heir;
-                house.overlord = hous.overlord;
-                house.founded = hous.founded;
-                house.founder = hous.founder;
-                house.diedOut = hous.diedOut;
-                // TODO: titles, seats, ancestral weapons, cadetbranches, swornmembers
+                BuildHouse(hous);
             }
             else if (searchstr.Contains("books"))
             {
@@ -95,6 +46,51 @@ namespace TXC54G_HF.ViewModels
             else
             {
                 throw new Exception("Se nem karakter, se nem ház, se nem könyv? Akkor mi?");
+            }
+        }
+
+        private void BuildHouse(House hous)
+        {
+            house.url = hous.url;
+            house.name = hous.name;
+            house.region = hous.region;
+            house.coatOfArms = hous.coatOfArms;
+            house.words = hous.words;
+            house.currentLord = hous.currentLord;
+            house.heir = hous.heir;
+            house.overlord = hous.overlord;
+            house.founded = hous.founded;
+            house.founder = hous.founder;
+            house.diedOut = hous.diedOut;
+            // TODO: titles, seats, ancestral weapons, cadetbranches, swornmembers
+        }
+
+        private void BuildCharacter(Character charact)
+        {
+            character.url = charact.url;
+            character.name = charact.name;
+            character.gender = charact.gender;
+            character.culture = charact.culture;
+            character.born = charact.born;
+            character.died = charact.died;
+            RepopulateObservableCollection(charact.titles, character.titles);
+            RepopulateObservableCollection(charact.aliases, character.aliases);
+            character.father = charact.father;
+            character.mother = charact.mother;
+            character.spouse = charact.spouse;
+            RepopulateObservableCollection(charact.allegiances, character.allegiances);
+            RepopulateObservableCollection(charact.books, character.books);
+            RepopulateObservableCollection(charact.povBooks, character.povBooks);
+            RepopulateObservableCollection(charact.tvSeries, character.tvSeries);
+            RepopulateObservableCollection(charact.playedBy, character.playedBy);
+        }
+
+        private void RepopulateObservableCollection<T>(ObservableCollection<T> source, ObservableCollection<T> destination)
+        {
+            destination.Clear();
+            foreach (T element in source)
+            {
+                destination.Add(element);
             }
         }
 

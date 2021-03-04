@@ -84,29 +84,7 @@ namespace TXC54G_HF.Services
             HouseService houseService = HouseService.Instance;
             BookService bookService = BookService.Instance;
             var characterhelper = await GetAsync<CharacterHelper>(uri);
-            var allegiances = new List<House>();
-            var books = new List<Book>();
-            var povBooks = new List<Book>();
-            foreach (var all in characterhelper.allegiances)
-            {
-                House h = await houseService.GetHouseAsyncFromFullUrl(new Uri(all), depth + 1);
-                allegiances.Add(h);
-            }
-            foreach (var book in characterhelper.books)
-            {
-                Book b = await bookService.GetBookAsyncFromFullUrl(new Uri(book), depth + 1);
-                books.Add(b);
-            }
-            foreach (var povbook in characterhelper.povBooks)
-            {
-                Book pb = await bookService.GetBookAsyncFromFullUrl(new Uri(povbook), depth + 1);
-                books.Add(pb);
-            }
-            Debug.WriteLine(characterhelper.father);
-            Debug.WriteLine("asd");
-            
-
-            return new Character()
+            var character = new Character()
             {
                 url = characterhelper.url,
                 name = characterhelper.name,
@@ -114,17 +92,53 @@ namespace TXC54G_HF.Services
                 culture = characterhelper.culture,
                 born = characterhelper.born,
                 died = characterhelper.died,
-                titles = characterhelper.titles,
-                aliases = characterhelper.aliases,
+                titles = new ObservableCollection<string>(),
+                aliases = new ObservableCollection<string>(),
                 father = characterhelper.father != "" ? await GetCharacterAsyncFromFullUrl(new Uri(characterhelper.father), depth + 1) : null,
-                mother = characterhelper.mother != "" ?  await GetCharacterAsyncFromFullUrl(new Uri(characterhelper.mother), depth + 1) : null,
-                spouse = characterhelper.spouse != "" ?  await GetCharacterAsyncFromFullUrl(new Uri(characterhelper.spouse), depth + 1) : null,
-                allegiances = allegiances,
-                books = books,
-                povBooks = povBooks,
-                tvSeries = characterhelper.tvSeries,
-                playedBy = characterhelper.playedBy
+                mother = characterhelper.mother != "" ? await GetCharacterAsyncFromFullUrl(new Uri(characterhelper.mother), depth + 1) : null,
+                spouse = characterhelper.spouse != "" ? await GetCharacterAsyncFromFullUrl(new Uri(characterhelper.spouse), depth + 1) : null,
+                allegiances = new ObservableCollection<House>(),
+                books = new ObservableCollection<Book>(),
+                povBooks = new ObservableCollection<Book>(),
+                tvSeries = new ObservableCollection<string>(),
+                playedBy = new ObservableCollection<string>()
             };
+
+            foreach (var all in characterhelper.allegiances)
+            {
+                House h = await houseService.GetHouseAsyncFromFullUrl(new Uri(all), depth + 1);
+                character.allegiances.Add(h);
+            }
+            foreach (var book in characterhelper.books)
+            {
+                Book b = await bookService.GetBookAsyncFromFullUrl(new Uri(book), depth + 1);
+                character.books.Add(b);
+            }
+            foreach (var povbook in characterhelper.povBooks)
+            {
+                Book pb = await bookService.GetBookAsyncFromFullUrl(new Uri(povbook), depth + 1);
+                character.books.Add(pb);
+            }
+            foreach (var title in characterhelper.titles)
+            {
+                character.titles.Add(title);
+            }
+            foreach (var alias in characterhelper.aliases)
+            {
+                character.aliases.Add(alias);
+            }
+            foreach (var tv in characterhelper.tvSeries)
+            {
+                character.tvSeries.Add(tv);
+            }
+            foreach (var actor in characterhelper.playedBy)
+            {
+                character.playedBy.Add(actor);
+            }
+
+
+            return character;
+            
         }
     }
 }
