@@ -187,6 +187,77 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        public async Task<IEnumerable<string>> GetEverything(int mode)
+        {
+            var res = new List<string>();
+            int pagelocal = 1; //Paging starts from 1
+            switch (mode)
+            {
+                case 0:
+                    var bookpreviewitems = await BookService.Instance.GetBooksPreviewAsync(pagelocal);
+                    while (bookpreviewitems.Count > 0)
+                    {
+                        foreach(var i in bookpreviewitems)
+                        {
+                            if (i.name == "")
+                            {
+                                res.Add("Unnamed");
+                            }
+                            else
+                            {
+                                res.Add(i.name);
+                            }
+                        }
+                        pagelocal++;
+                        bookpreviewitems = await BookService.Instance.GetBooksPreviewAsync(pagelocal);
+                    }
+                    break;
+                case 1:
+                    var housepreviewitems = await HouseService.Instance.GetHousesPreviewAsync(pagelocal);
+                    while (housepreviewitems.Count > 0)
+                    {
+                        foreach (var i in housepreviewitems)
+                        {
+                            if (i.name == "")
+                            {
+                                res.Add("Unnamed");
+                            }
+                            else
+                            {
+                                res.Add(i.name);
+                            }
+                        }
+                        pagelocal++;
+                        housepreviewitems = await HouseService.Instance.GetHousesPreviewAsync(pagelocal);
+                    }
+                    break;
+                case 2:
+                    var characterpreviewitems = await CharacterService.Instance.GetCharactersPreviewAsync(pagelocal);
+                    while (characterpreviewitems.Count > 0)
+                    {
+                        foreach (var i in characterpreviewitems)
+                        {
+                            if (i.name == "")
+                            {
+                                res.Add("Unnamed");
+                            }
+                            else
+                            {
+                                res.Add(i.name);
+                            }
+                        }
+                        pagelocal++;
+                        characterpreviewitems = await CharacterService.Instance.GetCharactersPreviewAsync(pagelocal);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
+            return res;
+        }
+
 
     }
 }

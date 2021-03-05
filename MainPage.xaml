@@ -26,6 +26,7 @@
        
 
         <CommandBar DefaultLabelPosition="Right">
+            <AppBarButton Icon="Filter" Label="File" Click="FileButton_Click"/>
             <AppBarButton Icon="Previous" VerticalAlignment="Top" Click="Button_Click_5"/>
             <AppBarButton Icon="Next" VerticalAlignment="Top" Click="Button_Click_6"/>
             <AppBarElementContainer Width="300" >

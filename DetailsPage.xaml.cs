@@ -97,11 +97,6 @@ namespace TXC54G_HF
             }
         }
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ViewModel.ShowDetails(ViewModel.character.father.url);
-        }
-
         private async void OnBookClick(object sender, TappedRoutedEventArgs e)
         {
             BookMode();

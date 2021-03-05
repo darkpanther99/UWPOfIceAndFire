@@ -10,6 +10,8 @@ using TXC54G_HF.Services;
 using TXC54G_HF.Services.HelperModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -126,6 +128,24 @@ namespace TXC54G_HF
             base.OnNavigatedTo(e);
             ViewModel.ListPreviews(mode);
             //TODO app startkor ne legyen semmi, egyébként az legyen, ami előzőleg volt.
+        }
+
+        private async void FileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.FileTypeFilter.Add(".txt");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var toWrite = await ViewModel.GetEverything(mode);
+                Debug.WriteLine("írás kezdődik!");
+                //var lines = await FileIO.ReadLinesAsync(file);
+                await FileIO.WriteLinesAsync(file, toWrite);
+            }
+            else
+            {
+            }
         }
     }
 }
