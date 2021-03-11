@@ -30,9 +30,7 @@ namespace TXC54G_HF
         public SettingsPage()
         {
             this.InitializeComponent();
-            HouseButtons.SelectedIndex = ViewModel.GetCurrentlySetIndex();
-            
-            
+            HouseButtons.SelectedIndex = ViewModel.GetCurrentlySetIndex(); 
         }
 
         private void NavBarSide_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

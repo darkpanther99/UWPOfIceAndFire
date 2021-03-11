@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TXC54G_HF.ViewModels.Utilities;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
 {
     class SettingsPageViewModel
     {
-        public ItemClass imageitem { get; set; } = new ItemClass() { Image = new BitmapImage(new Uri("ms-appx:///Assets/starklogo.png")) };
+        public ImageWrapper imageitem { get; set; } = new ImageWrapper() { Image = new BitmapImage(new Uri("ms-appx:///Assets/starklogo.png")) };
 
         public void RadioButtonSelectionChanged(string housename)
         {
@@ -37,31 +38,15 @@ namespace TXC54G_HF.ViewModels
                     case "baratheon":
                         idx = 2;
                         break;
+                    case "greyjoy":
+                        idx = 3;
+                        break;
                     default:
                         break;
-
                 }
             }
             return idx;
         }
     }
 
-    public class ItemClass : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        private BitmapImage image;
-        public BitmapImage Image
-        {
-            get { return image; }
-            set
-            {
-                image = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Image)));
-            }
-        }
-
-        public string Name { get; set; }
-    }
 }

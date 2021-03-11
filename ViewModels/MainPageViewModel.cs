@@ -19,6 +19,10 @@ namespace TXC54G_HF.ViewModels
         private Boolean lastCommandWasSearch = false;
         private string lastSearchText = "";
         public string currentlyBrowsing { get; set; } = "books";
+        public MainPageViewModel()
+        {
+
+        }
         public void initPage()
         {
             page = 1;

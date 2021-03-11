@@ -32,10 +32,11 @@
                        Margin="350,100,0,0"
                        SelectionChanged="RadioButtons_SelectionChanged"
                        x:Name = "HouseButtons">
-        <x:String>Stark</x:String>
-        <x:String>Lannister</x:String>
-        <x:String>Baratheon</x:String>
-    </muxc:RadioButtons>
+            <x:String>Stark</x:String>
+            <x:String>Lannister</x:String>
+            <x:String>Baratheon</x:String>
+            <x:String>Greyjoy</x:String>
+        </muxc:RadioButtons>
 
 
     </Grid>
