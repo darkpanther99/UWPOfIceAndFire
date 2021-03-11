@@ -303,7 +303,7 @@
             <NavigationView.MenuItems>
             </NavigationView.MenuItems>
         </NavigationView>
-        <Image x:Name="HouseImage" HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="Assets\starklogo.png" Loaded="Image_Loaded"/>
+        <Image x:Name="HouseImage" HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="{Binding imageitem.Image, Mode=OneWay}"/>
 
     </Grid>
 </Page>

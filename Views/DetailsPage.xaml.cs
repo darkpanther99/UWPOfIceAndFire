@@ -67,28 +67,6 @@ namespace TXC54G_HF
             ViewModel.ShowDetails(e.Parameter.ToString());
         }
 
-        private void Image_Loaded(object sender, RoutedEventArgs e)
-        {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            string value = localSettings.Values["favouritehouse"] as string;
-            Image img = sender as Image;
-            try
-            {
-                if (value == null)
-                {
-                    img.Source = new BitmapImage(new Uri("ms-appx:///Assets/starklogo.png"));
-                }
-                else
-                {
-                    img.Source = new BitmapImage(new Uri($"ms-appx:///Assets/{value}logo.png"));
-                }
-            }
-            catch (Exception exc)
-            {
-                Debug.WriteLine(exc.Message);
-            }
-
-        }
         private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)

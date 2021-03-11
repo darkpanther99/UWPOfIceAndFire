@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TXC54G_HF.Models;
 using TXC54G_HF.Services;
+using TXC54G_HF.ViewModels.Utilities;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
 {
@@ -33,6 +35,25 @@ namespace TXC54G_HF.ViewModels
             characters = new ObservableCollection<Character>(),
             povCharacters = new ObservableCollection<Character>()
         };
+        public ImageWrapper imageitem { get; set; }
+        public DetailsPageViewModel()
+        {
+            SetImage();
+        }
+
+        private void SetImage()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string value = localSettings.Values["favouritehouse"] as string;
+            if (value == null)
+            {
+                imageitem = new ImageWrapper() { Image = new BitmapImage(new Uri("ms-appx:///Assets/starklogo.png")) };
+            }
+            else
+            {
+                imageitem = new ImageWrapper() { Image = new BitmapImage(new Uri($"ms-appx:///Assets/{value}logo.png")) };
+            }
+        }
 
         public async void ShowDetails(string searchstr)
         {

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using TXC54G_HF.Models;
 using TXC54G_HF.Services;
 using TXC54G_HF.Services.HelperModels;
+using TXC54G_HF.ViewModels.Utilities;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
 {
@@ -16,12 +18,27 @@ namespace TXC54G_HF.ViewModels
         public ObservableCollection<BaseHelper> listitems { get; set; } = new ObservableCollection<BaseHelper>();
         private int page = 1;
         private int lastClicked = -1;
-        private Boolean lastCommandWasSearch = false;
+        private bool lastCommandWasSearch = false;
         private string lastSearchText = "";
         public string currentlyBrowsing { get; set; } = "books";
+        public ImageWrapper imageitem { get; set; }
         public MainPageViewModel()
         {
+            SetImage();
+        }
 
+        private void SetImage()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string value = localSettings.Values["favouritehouse"] as string;
+            if (value == null)
+            {
+                imageitem = new ImageWrapper() { Image = new BitmapImage(new Uri("ms-appx:///Assets/starklogo.png")) };
+            }
+            else
+            {
+                imageitem = new ImageWrapper() { Image = new BitmapImage(new Uri($"ms-appx:///Assets/{value}logo.png")) };
+            }
         }
         public void initPage()
         {
