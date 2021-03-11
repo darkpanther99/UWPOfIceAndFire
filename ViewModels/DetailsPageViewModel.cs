@@ -36,6 +36,13 @@ namespace TXC54G_HF.ViewModels
             povCharacters = new ObservableCollection<Character>()
         };
         public ImageWrapper imageitem { get; set; }
+        private string lastsearch = ""; //ez megmondja milyen módban vagyunk, a lapozáshoz kell
+        //lapozásnál a lapozó függvény továbbadja a search stringet a servicenek
+        public async void NextPage()
+        {
+            var bookhelper = await BookService.Instance.NextPage(lastsearch);
+            BuildBook(bookhelper);
+        }
         public DetailsPageViewModel()
         {
             SetImage();
@@ -60,17 +67,19 @@ namespace TXC54G_HF.ViewModels
             if (searchstr.Contains("characters"))
             {
                 var charact = await GetCharacter(searchstr);
+                lastsearch = searchstr;
                 BuildCharacter(charact);
-                
             }
             else if (searchstr.Contains("houses"))
             {
                 var hous = await GetHouse(searchstr);
+                lastsearch = searchstr;
                 BuildHouse(hous);
             }
             else if (searchstr.Contains("books"))
             {
                 var bookhelper = await GetBook(searchstr);
+                lastsearch = searchstr;
                 BuildBook(bookhelper);
             }
             else

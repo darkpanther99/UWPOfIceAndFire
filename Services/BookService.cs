@@ -14,6 +14,8 @@ namespace TXC54G_HF.Services
     {
         private BookService() { }
         private static BookService instance = null;
+        private int start = 0;
+        private const int charactersonpage = 10;
         public static BookService Instance
         {
             get
@@ -68,13 +70,19 @@ namespace TXC54G_HF.Services
             {
                 book.authors.Add(author);
             }
-            int counter = 0;
+            /*int counter = 0;
             foreach (var bookcharacter in bookhelper.characters)
             {
                     Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookcharacter), depth + 1);
                     book.characters.Add(c);
                 counter++;
                 if (counter > 10) break;
+            }*/
+            int end = start + charactersonpage;
+            for (int i = start; i < end; ++i)
+            {
+                Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookhelper.characters[i]), depth + 1);
+                book.characters.Add(c);
             }
             foreach (var bookcharacter in bookhelper.povCharacters)
             {
@@ -83,6 +91,13 @@ namespace TXC54G_HF.Services
             }
 
             return book;
+        }
+
+        public async Task<Book> NextPage(string searchstr)
+        {
+            //ezt lehet lehetne gyorsítani, kevesebb fölösleges dolgot lekérdezni
+            start += charactersonpage;
+            return await GetBookAsyncFromFullUrl(new Uri(searchstr), depth: 0);
         }
 
     }

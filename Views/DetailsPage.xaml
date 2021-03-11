@@ -17,6 +17,7 @@
             <CommandBar.Content>
                 <TextBlock x:Name="ContentText" Text="Character info" Margin="320, 12, 0, 0"/>
             </CommandBar.Content>
+            <AppBarButton Icon="Next" VerticalAlignment="Top" Click="AppBarButton_Click"/>
         </CommandBar>
 
         <StackPanel x:Name = "House1" Margin="400,100,0,0" Visibility="Collapsed">

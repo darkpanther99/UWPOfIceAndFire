@@ -147,6 +147,9 @@ namespace TXC54G_HF
             }
         }
 
-
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.NextPage();
+        }
     }
 }
