@@ -14,6 +14,8 @@ namespace TXC54G_HF.Services
     {
         private HouseService() { }
         private static HouseService instance = null;
+        private int start = 0;
+        private const int charactersonpage = 10;
         public static HouseService Instance
         {
             get
@@ -95,13 +97,57 @@ namespace TXC54G_HF.Services
                 House h = await GetHouseAsyncFromFullUrl(new Uri(cadetbranch), depth + 1);
                 house.cadetBranches.Add(h);
             }
-            foreach (var swornmember in househelper.swornMembers)
+            int end = start + charactersonpage;
+            if (end > househelper.swornMembers.Count())
+            {
+                end = househelper.swornMembers.Count();
+            }
+            for (int i = start; i < end; ++i)
+            {
+                Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(househelper.swornMembers[i]), depth + 1);
+                house.swornMembers.Add(c);
+            }
+            /*foreach (var swornmember in househelper.swornMembers)
             {
                 Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(swornmember), depth + 1);
                 house.swornMembers.Add(c);
-            }
+            }*/
 
             return house;
+        }
+
+        public async Task<List<Character>> NextPage(string searchstr)
+        {
+            //ezt lehet lehetne gyorsítani, kevesebb fölösleges dolgot lekérdezni
+            start += charactersonpage;
+            return await GetCharactersFromInterval(new Uri(searchstr));
+        }
+
+        public async Task<List<Character>> PreviousPage(string searchstr)
+        {
+            start -= charactersonpage;
+            if (start < 0)
+            {
+                start = 0;
+            }
+            return await GetCharactersFromInterval(new Uri(searchstr));
+        }
+
+        private async Task<List<Character>> GetCharactersFromInterval(Uri uri)
+        {
+            var househelper = await GetAsync<HouseHelper>(uri);
+            var res = new List<Character>();
+            int end = start + charactersonpage;
+            if (end > househelper.swornMembers.Count())
+            {
+                end = househelper.swornMembers.Count();
+            }
+            for (int i = start; i < end; ++i)
+            {
+                Character c = await CharacterService.Instance.GetCharacterAsyncFromFullUrl(new Uri(househelper.swornMembers[i]), depth: 1);
+                res.Add(c);
+            }
+            return res;
         }
     }
 }

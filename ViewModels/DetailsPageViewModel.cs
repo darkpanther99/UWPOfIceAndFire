@@ -14,6 +14,7 @@ namespace TXC54G_HF.ViewModels
 {
     class DetailsPageViewModel
     {
+        private int mode = 0;
         public Character character { get; set; } = new Character() {
             allegiances = new ObservableCollection<House>(), 
             books = new ObservableCollection<Book>(),
@@ -38,10 +39,33 @@ namespace TXC54G_HF.ViewModels
         public ImageWrapper imageitem { get; set; }
         private string lastsearch = ""; //ez megmondja milyen módban vagyunk, a lapozáshoz kell
         //lapozásnál a lapozó függvény továbbadja a search stringet a servicenek
-        public async void NextPage()
+        public async void NextPage(int mode)
         {
-            var bookhelper = await BookService.Instance.NextPage(lastsearch);
-            BuildBook(bookhelper);
+            if (mode == 0)
+            {
+                var newcharacters = await BookService.Instance.NextPage(lastsearch);
+                RepopulateObservableCollection(newcharacters, book.characters);
+            }
+            else if (mode == 1)
+            {
+                var newcharacters = await HouseService.Instance.NextPage(lastsearch);
+                RepopulateObservableCollection(newcharacters, house.swornMembers);
+            }
+            
+        }
+        public async void PreviousPage(int mode)
+        {
+            if (mode == 0)
+            {
+                var newcharacters = await BookService.Instance.PreviousPage(lastsearch);
+                RepopulateObservableCollection(newcharacters, book.characters);
+            }
+            else if (mode == 1)
+            {
+                var newcharacters = await HouseService.Instance.PreviousPage(lastsearch);
+                RepopulateObservableCollection(newcharacters, house.swornMembers);
+            }
+            
         }
         public DetailsPageViewModel()
         {
@@ -172,7 +196,7 @@ namespace TXC54G_HF.ViewModels
             RepopulateObservableCollection(charact.playedBy, character.playedBy);
         }
 
-        private void RepopulateObservableCollection<T>(ObservableCollection<T> source, ObservableCollection<T> destination)
+        private void RepopulateObservableCollection<T>(IReadOnlyCollection<T> source, ObservableCollection<T> destination)
         {
             destination.Clear();
             foreach (T element in source)

@@ -24,6 +24,7 @@ namespace TXC54G_HF
     /// </summary>
     public sealed partial class DetailsPage : Page
     {
+        private int mode = 0;
         private List<StackPanel> bookControls = new List<StackPanel>();
         private List<StackPanel> characterControls = new List<StackPanel>();
         private List<StackPanel> houseControls = new List<StackPanel>();
@@ -101,6 +102,7 @@ namespace TXC54G_HF
 
         private void BookMode()
         {
+            mode = 0;
             foreach (var control in bookControls)
             {
                 control.Visibility = Visibility.Visible;
@@ -117,6 +119,7 @@ namespace TXC54G_HF
 
         private void HouseMode()
         {
+            mode = 1;
             foreach (var control in bookControls)
             {
                 control.Visibility = Visibility.Collapsed;
@@ -133,6 +136,7 @@ namespace TXC54G_HF
 
         private void CharacterMode()
         {
+            mode = 2;
             foreach (var control in bookControls)
             {
                 control.Visibility = Visibility.Collapsed;
@@ -149,7 +153,12 @@ namespace TXC54G_HF
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.NextPage();
+            ViewModel.NextPage(mode);
+        }
+
+        private void PrevPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.PreviousPage(mode);
         }
     }
 }
