@@ -39,6 +39,7 @@ namespace TXC54G_HF
             characterControls.Add(Character3);
             houseControls.Add(House1);
             houseControls.Add(House2);
+            houseControls.Add(House3);
         }
 
         private void NavBarSide_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
@@ -102,6 +103,9 @@ namespace TXC54G_HF
 
         private void BookMode()
         {
+            NextButton.IsEnabled = true;
+            PrevButton.IsEnabled = true;
+            ContentText.Text = "Book details";
             mode = 0;
             foreach (var control in bookControls)
             {
@@ -119,6 +123,9 @@ namespace TXC54G_HF
 
         private void HouseMode()
         {
+            NextButton.IsEnabled = true;
+            PrevButton.IsEnabled = true;
+            ContentText.Text = "House details";
             mode = 1;
             foreach (var control in bookControls)
             {
@@ -136,6 +143,9 @@ namespace TXC54G_HF
 
         private void CharacterMode()
         {
+            NextButton.IsEnabled = false;
+            PrevButton.IsEnabled = false;
+            ContentText.Text = "Character details";
             mode = 2;
             foreach (var control in bookControls)
             {
@@ -151,7 +161,7 @@ namespace TXC54G_HF
             }
         }
 
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.NextPage(mode);
         }
