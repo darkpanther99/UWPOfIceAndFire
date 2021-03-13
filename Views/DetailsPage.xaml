@@ -10,22 +10,72 @@
 
     <Page.DataContext>
         <vm:DetailsPageViewModel x:Name="ViewModel"/>
-    </Page.DataContext>
-    <Grid>
-        <CommandBar DefaultLabelPosition="Right">
+    </Page.DataContext>    <Page.TopAppBar>        <CommandBar DefaultLabelPosition="Right" Opacity="100">
             <CommandBar.Content>
                 <TextBlock x:Name="ContentText" Text="Character info" Margin="400, 12, 0, 0"/>
             </CommandBar.Content>
             <AppBarButton Name = "PrevButton" Icon="Back" VerticalAlignment="Top" Click="PrevPageButton_Click"/>
             <AppBarButton Name = "NextButton" Icon="Forward" VerticalAlignment="Top" Click="NextPageButton_Click"/>
-        </CommandBar>
+        </CommandBar>    </Page.TopAppBar>
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1440"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="House2.(Grid.Column)" Value="1"/>
+                        <Setter Target="House2.(Grid.Row)" Value="0"/>
+                        <Setter Target="House3.(Grid.Column)" Value="2"/>
+                        <Setter Target="House3.(Grid.Row)" Value="0"/>
+                        <Setter Target="Book2.(Grid.Column)" Value="1"/>
+                        <Setter Target="Book2.(Grid.Row)" Value="0"/>
+                        <Setter Target="Book3.(Grid.Column)" Value="2"/>
+                        <Setter Target="Book3.(Grid.Row)" Value="0"/>
+                        <Setter Target="Character2.(Grid.Column)" Value="1"/>
+                        <Setter Target="Character2.(Grid.Row)" Value="0"/>
+                        <Setter Target="Character3.(Grid.Column)" Value="2"/>
+                        <Setter Target="Character3.(Grid.Row)" Value="0"/>
+                    </VisualState.Setters>
+                </VisualState>
 
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="House2.(Grid.Column)" Value="0"/>
+                        <Setter Target="House2.(Grid.Row)" Value="1"/>
+                        <Setter Target="House3.(Grid.Column)" Value="0"/>
+                        <Setter Target="House3.(Grid.Row)" Value="2"/>
+                        <Setter Target="Book2.(Grid.Column)" Value="0"/>
+                        <Setter Target="Book2.(Grid.Row)" Value="1"/>
+                        <Setter Target="Book3.(Grid.Column)" Value="0"/>
+                        <Setter Target="Book3.(Grid.Row)" Value="2"/>
+                        <Setter Target="Character2.(Grid.Column)" Value="0"/>
+                        <Setter Target="Character2.(Grid.Row)" Value="1"/>
+                        <Setter Target="Character3.(Grid.Column)" Value="0"/>
+                        <Setter Target="Character3.(Grid.Row)" Value="2"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+
+        <ScrollViewer>
         <Grid Margin="400,100,0,0">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
             <StackPanel x:Name = "House1" Grid.Column="0" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">
@@ -310,10 +360,12 @@
 
         
         </Grid>
+        </ScrollViewer>
         <NavigationView x:Name="NavBarSide" IsBackEnabled="True" BackRequested="NavBarSide_BackRequested" ItemInvoked="NavigationView_ItemInvoked" Grid.Column="0" Grid.Row="1">
             <NavigationView.MenuItems>
             </NavigationView.MenuItems>
         </NavigationView>
         <Image x:Name="HouseImage" HorizontalAlignment="Left" Height="200" Margin="50,50,0,0" VerticalAlignment="Top" Width="200" Source="{Binding imageitem.Image, Mode=OneWay}"/>
     </Grid>
+    
 </Page>
