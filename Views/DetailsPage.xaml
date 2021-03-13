@@ -10,9 +10,9 @@
 
     <Page.DataContext>
         <vm:DetailsPageViewModel x:Name="ViewModel"/>
-    </Page.DataContext>    <Page.TopAppBar>        <CommandBar DefaultLabelPosition="Right" Opacity="100">
+    </Page.DataContext>    <Page.TopAppBar>        <CommandBar DefaultLabelPosition="Right" HorizontalContentAlignment="Center" IsDynamicOverflowEnabled="False">
             <CommandBar.Content>
-                <TextBlock x:Name="ContentText" Text="Character info" Margin="400, 12, 0, 0"/>
+                <TextBlock x:Name="ContentText" Text="Character info"  Margin="0, 12, 0, 0"/>
             </CommandBar.Content>
             <AppBarButton Name = "PrevButton" Icon="Back" VerticalAlignment="Top" Click="PrevPageButton_Click"/>
             <AppBarButton Name = "NextButton" Icon="Forward" VerticalAlignment="Top" Click="NextPageButton_Click"/>
@@ -22,7 +22,7 @@
             <VisualStateGroup>
                 <VisualState x:Name="Wide">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1440"/>
+                        <AdaptiveTrigger MinWindowWidth="1600"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="House2.(Grid.Column)" Value="1"/>
@@ -67,9 +67,9 @@
         <Grid Margin="400,100,0,0">
             
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="500" />
+                <ColumnDefinition Width="500" />
+                <ColumnDefinition Width="500" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -86,10 +86,14 @@
                     <TextBlock Height="50" Width="132" Text="Region:" />
                     <TextBlock Text="{Binding house.region, Mode=OneWay}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Height="50" Width="132" Text="CoatOfArms:" />
-                    <TextBlock Text="{Binding house.coatOfArms, Mode=OneWay}" TextWrapping="Wrap" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="132" />
+                        <ColumnDefinition Width="268" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Height="50" Width="132" Text="CoatOfArms:" />
+                    <TextBlock Grid.Column="1" Text="{Binding house.coatOfArms, Mode=OneWay}" TextWrapping="Wrap" />
+                </Grid>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Height="50" Width="132" Text="Words:" />
                     <TextBlock Text="{Binding house.words, Mode=OneWay}" />
@@ -261,16 +265,20 @@
                 <TextBlock Height="50" Width="100" Text="Died:" />
                 <TextBlock Text="{Binding character.died, Mode=OneWay}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Titles:" />
-                <ListView SelectionMode="None" ItemsSource="{Binding character.titles}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="88" />
+                    <ColumnDefinition Width="312" />
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Top" Grid.Column="0" Height="50" Width="88" Text="Titles:" />
+                    <ListView SelectionMode="None" Grid.Column="1" ItemsSource="{Binding character.titles}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Height="50" Width="300" Text="{Binding}"/>
+                            <TextBlock Height="50" Width="300" Text="{Binding}" TextWrapping="Wrap"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </StackPanel>
+            </Grid>
             <StackPanel Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Top" Height="50" Width="88" Text="Aliases:" />
                 <ListView SelectionMode="None" ItemsSource="{Binding character.aliases}">
