@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TXC54G_HF.Models;
 using TXC54G_HF.Services;
 using TXC54G_HF.Services.HelperModels;
+using TXC54G_HF.ViewModels.Utilities;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -30,7 +31,7 @@ namespace TXC54G_HF
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private int mode = 0;
+        private Mode mode = Mode.Book;
         public MainPage()
         {
             this.InitializeComponent();
@@ -53,21 +54,21 @@ namespace TXC54G_HF
 
         private void BookButton_Click_2(object sender, RoutedEventArgs e)
         {
-            mode = 0;
+            mode = Mode.Book;
             ContentText.Text = "Currently browsing: Books";
             ViewModel.ListPreviews(mode);
         }
 
         private void HouseButton_Click_3(object sender, RoutedEventArgs e)
         {
-            mode = 1;
+            mode = Mode.House;
             ContentText.Text = "Currently browsing: Houses";
             ViewModel.ListPreviews(mode);
         }
 
         private void CharacterButton_Click_4(object sender, RoutedEventArgs e)
         {
-            mode = 2;
+            mode = Mode.Character;
             ContentText.Text = "Currently browsing: Characters";
             ViewModel.ListPreviews(mode);
         }
@@ -104,19 +105,14 @@ namespace TXC54G_HF
 
         private async void FileButton_Click(object sender, RoutedEventArgs e)
         {
-            var picker = new FileOpenPicker();
-            picker.ViewMode = PickerViewMode.Thumbnail;
-            picker.FileTypeFilter.Add(".txt");
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
+            ViewModel.SaveToFile(mode);
+        }
+
+        private void Search_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == Windows.System.VirtualKey.Enter)
             {
-                var toWrite = await ViewModel.GetEverything(mode);
-                Debug.WriteLine("írás kezdődik!");
-                //var lines = await FileIO.ReadLinesAsync(file);
-                await FileIO.WriteLinesAsync(file, toWrite);
-            }
-            else
-            {
+                ViewModel.Search(Search.Text, mode);
             }
         }
     }

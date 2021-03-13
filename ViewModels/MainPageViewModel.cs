@@ -9,6 +9,8 @@ using TXC54G_HF.Models;
 using TXC54G_HF.Services;
 using TXC54G_HF.Services.HelperModels;
 using TXC54G_HF.ViewModels.Utilities;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
@@ -17,7 +19,7 @@ namespace TXC54G_HF.ViewModels
     {
         public ObservableCollection<BaseHelper> listitems { get; set; } = new ObservableCollection<BaseHelper>();
         private int page = 1;
-        private int lastClicked = -1;
+        private Mode lastClicked = Mode.Undefined;
         private bool lastCommandWasSearch = false;
         private string lastSearchText = "";
         public string currentlyBrowsing { get; set; } = "books";
@@ -56,23 +58,29 @@ namespace TXC54G_HF.ViewModels
                 initPage();
             }
         }
-        public void Search(string searchtext, int cnt)
+        public void Search(string searchtext, Mode mode)
         {
+            //If the search text is empty, I make a listing instead and return.
+            if (searchtext.Length < 1)
+            {
+                ListPreviews(mode);
+                return;
+            }
             lastCommandWasSearch = true;
-            if (cnt != lastClicked)
+            if (mode != lastClicked)
             {
                 initPage();
             }
-            lastClicked = cnt;
-            switch (cnt)
+            lastClicked = mode;
+            switch (mode)
             {
-                case 0:
+                case Mode.Book:
                     SearchBooks(searchtext);
                     break;
-                case 1:
+                case Mode.House:
                     SearchHouses(searchtext);
                     break;
-                case 2:
+                case Mode.Character:
                     SearchCharacters(searchtext);
                     break;
                 default:
@@ -81,23 +89,23 @@ namespace TXC54G_HF.ViewModels
             lastSearchText = searchtext;
         }
         
-        public void ListPreviews(int cnt)
+        public void ListPreviews(Mode mode)
         {
             lastCommandWasSearch = false;
-            if (cnt != lastClicked)
+            if (mode != lastClicked)
             {
                 initPage();
             }
-            lastClicked = cnt;
-            switch (cnt)
+            lastClicked = mode;
+            switch (mode)
             {
-                case 0:
+                case Mode.Book:
                     ListBooks();
                     break;
-                case 1:
+                case Mode.House:
                     ListHouses();
                     break;
-                case 2:
+                case Mode.Character:
                     ListCharacters();
                     break;
                 default:
@@ -208,13 +216,31 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
-        public async Task<IEnumerable<string>> GetEverything(int mode)
+        public async void SaveToFile(Mode mode)
+        {
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.FileTypeFilter.Add(".txt");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var toWrite = await GetEverything(mode);
+                Debug.WriteLine("írás kezdődik!");
+                //var lines = await FileIO.ReadLinesAsync(file);
+                await FileIO.WriteLinesAsync(file, toWrite);
+            }
+            else
+            {
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetEverything(Mode mode)
         {
             var res = new List<string>();
             int pagelocal = 1; //Paging starts from 1
             switch (mode)
             {
-                case 0:
+                case Mode.Book:
                     var bookpreviewitems = await BookService.Instance.GetBooksPreviewAsync(pagelocal);
                     while (bookpreviewitems.Count > 0)
                     {
@@ -233,7 +259,7 @@ namespace TXC54G_HF.ViewModels
                         bookpreviewitems = await BookService.Instance.GetBooksPreviewAsync(pagelocal);
                     }
                     break;
-                case 1:
+                case Mode.House:
                     var housepreviewitems = await HouseService.Instance.GetHousesPreviewAsync(pagelocal);
                     while (housepreviewitems.Count > 0)
                     {
@@ -252,7 +278,7 @@ namespace TXC54G_HF.ViewModels
                         housepreviewitems = await HouseService.Instance.GetHousesPreviewAsync(pagelocal);
                     }
                     break;
-                case 2:
+                case Mode.Character:
                     var characterpreviewitems = await CharacterService.Instance.GetCharactersPreviewAsync(pagelocal);
                     while (characterpreviewitems.Count > 0)
                     {
@@ -278,6 +304,8 @@ namespace TXC54G_HF.ViewModels
 
             return res;
         }
+
+
 
 
     }

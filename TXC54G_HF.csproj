@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Utilities\ImageWrapper.cs" />
+    <Compile Include="ViewModels\Utilities\Modes.cs" />
     <Compile Include="Views\DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
