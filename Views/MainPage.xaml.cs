@@ -36,9 +36,11 @@ namespace TXC54G_HF
         {
             this.InitializeComponent();
         }
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Search(Search.Text, mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.Search(Search.Text, mode);
+            QueryState.Text = "Query Completed";
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -52,45 +54,57 @@ namespace TXC54G_HF
             this.Frame.Navigate(typeof(DetailsPage), clicked.url);
         }
 
-        private void BookButton_Click_2(object sender, RoutedEventArgs e)
+        private async void BookButton_Click_2(object sender, RoutedEventArgs e)
         {
             mode = Mode.Book;
             ContentText.Text = "Currently browsing: Books";
-            ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Completed";
         }
 
-        private void HouseButton_Click_3(object sender, RoutedEventArgs e)
+        private async void HouseButton_Click_3(object sender, RoutedEventArgs e)
         {
             mode = Mode.House;
             ContentText.Text = "Currently browsing: Houses";
-            ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Completed";
         }
 
-        private void CharacterButton_Click_4(object sender, RoutedEventArgs e)
+        private async void CharacterButton_Click_4(object sender, RoutedEventArgs e)
         {
             mode = Mode.Character;
             ContentText.Text = "Currently browsing: Characters";
-            ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Completed";
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private async void Button_Click_5(object sender, RoutedEventArgs e)
         {
             ViewModel.previousPage();
-            ViewModel.ListNewPageOfPreviews();
+            QueryState.Text = "Query Started";
+            await ViewModel.ListNewPageOfPreviews();
+            QueryState.Text = "Query Completed";
         }
 
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private async void Button_Click_6(object sender, RoutedEventArgs e)
         {
             ViewModel.nextPage();
-            ViewModel.ListNewPageOfPreviews();
+            QueryState.Text = "Query Started";
+            await ViewModel.ListNewPageOfPreviews();
+            QueryState.Text = "Query Completed";
         }
 
-        private void ListAppBarButton_Click(object sender, RoutedEventArgs e)
+        private async void ListAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.ListPreviews(mode);
+            QueryState.Text = "Query Completed";
         }
 
-        private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)
             {
@@ -105,14 +119,16 @@ namespace TXC54G_HF
 
         private async void FileButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.SaveToFile(mode);
+            await ViewModel.SaveToFile(mode);
         }
 
-        private void Search_KeyUp(object sender, KeyRoutedEventArgs e)
+        private async void Search_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if(e.Key == Windows.System.VirtualKey.Enter)
             {
-                ViewModel.Search(Search.Text, mode);
+                QueryState.Text = "Query Started";
+                await ViewModel.Search(Search.Text, mode);
+                QueryState.Text = "Query Completed";
             }
         }
     }

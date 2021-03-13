@@ -47,7 +47,7 @@ namespace TXC54G_HF
             _ = App.TryGoBack();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             if (e.Parameter.ToString().Contains("characters"))
@@ -66,10 +66,12 @@ namespace TXC54G_HF
             {
                 throw new Exception("Se nem karakter, se nem ház, se nem könyv? Akkor mi?");
             }
-            ViewModel.ShowDetails(e.Parameter.ToString());
+            QueryState.Text = "Query Started";
+            await ViewModel.ShowDetails(e.Parameter.ToString());
+            QueryState.Text = "Query Completed";
         }
 
-        private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)
             {
@@ -82,7 +84,9 @@ namespace TXC54G_HF
             BookMode();
             var src = sender as TextBlock;
             var toShow = await ViewModel.GetURIStringFromName(src.Text);
-            ViewModel.ShowDetails(toShow);
+            QueryState.Text = "Query Started";
+            await ViewModel.ShowDetails(toShow);
+            QueryState.Text = "Query Completed";
         }
 
         private async void OnCharacterClick(object sender, TappedRoutedEventArgs e)
@@ -90,7 +94,9 @@ namespace TXC54G_HF
             CharacterMode();
             var src = sender as TextBlock;
             var toShow = await ViewModel.GetURIStringFromName(src.Text);
-            ViewModel.ShowDetails(toShow);
+            QueryState.Text = "Query Started";
+            await ViewModel.ShowDetails(toShow);
+            QueryState.Text = "Query Completed";
         }
 
         private async void OnHouseClick(object sender, TappedRoutedEventArgs e)
@@ -98,7 +104,9 @@ namespace TXC54G_HF
             HouseMode();
             var src = sender as TextBlock;
             var toShow = await ViewModel.GetURIStringFromName(src.Text);
-            ViewModel.ShowDetails(toShow);
+            QueryState.Text = "Query Started";
+            await ViewModel.ShowDetails(toShow);
+            QueryState.Text = "Query Completed";
         }
 
         private void BookMode()
@@ -161,14 +169,18 @@ namespace TXC54G_HF
             }
         }
 
-        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        private async void NextPageButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.NextPage(mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.NextPage(mode);
+            QueryState.Text = "Query Completed";
         }
 
-        private void PrevPageButton_Click(object sender, RoutedEventArgs e)
+        private async void PrevPageButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.PreviousPage(mode);
+            QueryState.Text = "Query Started";
+            await ViewModel.PreviousPage(mode);
+            QueryState.Text = "Query Completed";
         }
     }
 }

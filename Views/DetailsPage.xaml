@@ -16,6 +16,9 @@
             </CommandBar.Content>
             <AppBarButton Name = "PrevButton" Icon="Back" VerticalAlignment="Top" Click="PrevPageButton_Click"/>
             <AppBarButton Name = "NextButton" Icon="Forward" VerticalAlignment="Top" Click="NextPageButton_Click"/>
+            <AppBarElementContainer>
+                <TextBlock Width ="110" x:Name="QueryState" Text="Query Completed" Height="40" />
+            </AppBarElementContainer>
         </CommandBar>    </Page.TopAppBar>
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -120,7 +123,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Height="50" Width="132" Text="Current Lord:" />
-                    <TextBlock Text="{Binding house.currentLord.name, Mode=OneWay}" Tapped="OnCharacterClick" />
+                    <TextBlock Text="{Binding house.currentLord.name, Mode=OneWay}" Tapped="OnCharacterClick"  />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Height="50" Width="132" Text="Heir:" />

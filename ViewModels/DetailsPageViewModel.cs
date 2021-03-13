@@ -39,7 +39,7 @@ namespace TXC54G_HF.ViewModels
         public ImageWrapper imageitem { get; set; }
         private string lastsearch = ""; //ez megmondja milyen módban vagyunk, a lapozáshoz kell
         //lapozásnál a lapozó függvény továbbadja a search stringet a servicenek
-        public async void NextPage(int mode)
+        public async Task NextPage(int mode)
         {
             if (mode == 0)
             {
@@ -53,7 +53,7 @@ namespace TXC54G_HF.ViewModels
             }
             
         }
-        public async void PreviousPage(int mode)
+        public async Task PreviousPage(int mode)
         {
             if (mode == 0)
             {
@@ -86,7 +86,7 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
-        public async void ShowDetails(string searchstr)
+        public async Task ShowDetails(string searchstr)
         {
             if (searchstr.Contains("characters"))
             {

@@ -13,10 +13,28 @@
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
+    <Page.TopAppBar>
+        <CommandBar DefaultLabelPosition="Right">
+            <AppBarButton Icon="Filter" Label="File" Click="FileButton_Click"/>
+            <AppBarButton Icon="Back" VerticalAlignment="Top" Click="Button_Click_5"/>
+            <AppBarButton Icon="Forward" VerticalAlignment="Top" Click="Button_Click_6"/>
+            <AppBarElementContainer Width="300" >
+                <TextBox Width="300" Height="40" x:Name="Search" PlaceholderText="Search" KeyUp="Search_KeyUp"/>
+            </AppBarElementContainer>
+            <AppBarButton Icon="Find"  Label="Search" Click="SearchButton_Click"/>
+            <AppBarButton Icon="List" Label="List" Click="ListAppBarButton_Click"/>
+            <AppBarElementContainer>
+                <TextBlock Width ="110" x:Name="QueryState" Text="Query Completed" Height="40" />
+            </AppBarElementContainer>
 
+            <CommandBar.Content>
+                <TextBlock x:Name="ContentText" Text="Currently browsing: Books" Margin="100, 12, 0, 0"/>
+            </CommandBar.Content>
+        </CommandBar>
+    </Page.TopAppBar>
 
     <Grid>
-        <GridView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left"  Margin="400,250,0,0" VerticalAlignment="Top" ItemsSource="{Binding listitems}">
+        <GridView ItemClick="ListView_ItemClick" IsItemClickEnabled="True" HorizontalAlignment="Left"  Margin="400,100,0,0" VerticalAlignment="Top" ItemsSource="{Binding listitems}">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Height = "30" Width="400" Text="{Binding name}" />
@@ -25,20 +43,7 @@
         </GridView>
 
 
-        <CommandBar HorizontalContentAlignment="Center" IsDynamicOverflowEnabled="False" DefaultLabelPosition="Right">
-            <AppBarButton Icon="Filter" Label="File" Click="FileButton_Click"/>
-            <AppBarButton Icon="Previous" VerticalAlignment="Top" Click="Button_Click_5"/>
-            <AppBarButton Icon="Next" VerticalAlignment="Top" Click="Button_Click_6"/>
-            <AppBarElementContainer Width="300" >
-                <TextBox Width="300" Height="40" x:Name="Search" PlaceholderText="Search" KeyUp="Search_KeyUp"/>
-            </AppBarElementContainer>
-            <AppBarButton Icon="Find"  Label="Search" Click="SearchButton_Click"/>
-            <AppBarButton Icon="List" Label="List" Click="ListAppBarButton_Click"/>
-
-            <CommandBar.Content>
-                <TextBlock x:Name="ContentText" Text="Currently browsing: Books" Margin="0, 12, 0, 0"/>
-            </CommandBar.Content>
-        </CommandBar>
+        
 
         <NavigationView x:Name="NavBarSide" ItemInvoked="NavigationView_ItemInvoked">
             <NavigationView.MenuItems>

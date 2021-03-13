@@ -58,12 +58,12 @@ namespace TXC54G_HF.ViewModels
                 initPage();
             }
         }
-        public void Search(string searchtext, Mode mode)
+        public async Task Search(string searchtext, Mode mode)
         {
             //If the search text is empty, I make a listing instead and return.
             if (searchtext.Length < 1)
             {
-                ListPreviews(mode);
+                await ListPreviews(mode);
                 return;
             }
             lastCommandWasSearch = true;
@@ -75,13 +75,13 @@ namespace TXC54G_HF.ViewModels
             switch (mode)
             {
                 case Mode.Book:
-                    SearchBooks(searchtext);
+                    await SearchBooks(searchtext);
                     break;
                 case Mode.House:
-                    SearchHouses(searchtext);
+                    await SearchHouses(searchtext);
                     break;
                 case Mode.Character:
-                    SearchCharacters(searchtext);
+                    await SearchCharacters(searchtext);
                     break;
                 default:
                     break;
@@ -89,7 +89,7 @@ namespace TXC54G_HF.ViewModels
             lastSearchText = searchtext;
         }
         
-        public void ListPreviews(Mode mode)
+        public async Task ListPreviews(Mode mode)
         {
             lastCommandWasSearch = false;
             if (mode != lastClicked)
@@ -100,30 +100,30 @@ namespace TXC54G_HF.ViewModels
             switch (mode)
             {
                 case Mode.Book:
-                    ListBooks();
+                    await ListBooks();
                     break;
                 case Mode.House:
-                    ListHouses();
+                    await ListHouses();
                     break;
                 case Mode.Character:
-                    ListCharacters();
+                    await ListCharacters();
                     break;
                 default:
                     break;
             }
         }
-        public void ListNewPageOfPreviews()
+        public async Task ListNewPageOfPreviews()
         {
             if (lastCommandWasSearch)
             {
-                Search(lastSearchText, lastClicked);
+                await Search(lastSearchText, lastClicked);
             }
             else
             {
-                ListPreviews(lastClicked);
+                await ListPreviews(lastClicked);
             }
         }
-        private async void SearchCharacters(string searchtext)
+        private async Task SearchCharacters(string searchtext)
         {
             var chsInstance = CharacterService.Instance;
             var previewitems = await chsInstance.GetCharactersPreviewAsyncFromName(searchtext);
@@ -158,13 +158,13 @@ namespace TXC54G_HF.ViewModels
 
 
         }
-        private async void SearchBooks(string searchtext)
+        private async Task SearchBooks(string searchtext)
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsyncFromName(searchtext);
             RepopulateListitems(previewitems);
         }
 
-        private async void SearchHouses(string searchtext)
+        private async Task SearchHouses(string searchtext)
         {
             var hsInstance = HouseService.Instance;
             var previewitems = await hsInstance.GetHousesPreviewAsyncFromName(searchtext);
@@ -175,17 +175,17 @@ namespace TXC54G_HF.ViewModels
             AppendToListitems(previewwords);
         }
 
-        private async void ListCharacters()
+        private async Task ListCharacters()
         {
             var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync(page);
             RepopulateListitems(previewitems);
         }
-        private async void ListHouses()
+        private async Task ListHouses()
         {
             var previewitems = await HouseService.Instance.GetHousesPreviewAsync(page);
             RepopulateListitems(previewitems);
         }
-        private async void ListBooks()
+        private async Task ListBooks()
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsync(page);
             RepopulateListitems(previewitems);
@@ -216,7 +216,7 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
-        public async void SaveToFile(Mode mode)
+        public async Task SaveToFile(Mode mode)
         {
             var picker = new FileOpenPicker();
             picker.ViewMode = PickerViewMode.Thumbnail;
