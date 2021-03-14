@@ -14,7 +14,11 @@ namespace TXC54G_HF.ViewModels
 {
     class DetailsPageViewModel
     {
-        private int mode = 0;
+        //private int mode = 0;
+
+        /// <summary>
+        /// Databound Character entity, with initialized Observable Collections.
+        /// </summary>
         public Character character { get; set; } = new Character() {
             allegiances = new ObservableCollection<House>(), 
             books = new ObservableCollection<Book>(),
@@ -24,6 +28,10 @@ namespace TXC54G_HF.ViewModels
             tvSeries = new ObservableCollection<string>(),
             playedBy = new ObservableCollection<string>(),
         };
+
+        /// <summary>
+        /// Databound House entity, with initialized Observable Collections.
+        /// </summary>
         public House house { get; set; } = new House() {
             titles = new ObservableCollection<string>(),
             seats = new ObservableCollection<string>(),
@@ -31,36 +39,50 @@ namespace TXC54G_HF.ViewModels
             cadetBranches = new ObservableCollection<House>(),
             swornMembers = new ObservableCollection<Character>()
         };
+
+        /// <summary>
+        /// Databound Book entity, with initialized Observable Collections.
+        /// </summary>
         public Book book { get; set; } = new Book() { 
             authors = new ObservableCollection<string>(),
             characters = new ObservableCollection<Character>(),
             povCharacters = new ObservableCollection<Character>()
         };
+
+        /// <summary>
+        /// Databound property of the shown logo image
+        /// </summary>
         public ImageWrapper imageitem { get; set; }
+
+        /// <summary>
+        /// Keeps track of the last search.
+        /// This is used to be able to handle paging of a shown list.
+        /// </summary>
         private string lastsearch = ""; //ez megmondja milyen módban vagyunk, a lapozáshoz kell
         //lapozásnál a lapozó függvény továbbadja a search stringet a servicenek
-        public async Task NextPage(int mode)
+
+        public async Task NextPage(Mode mode)
         {
-            if (mode == 0)
+            if (mode == Mode.Book)
             {
                 var newcharacters = await BookService.Instance.NextPage(lastsearch);
                 RepopulateObservableCollection(newcharacters, book.characters);
             }
-            else if (mode == 1)
+            else if (mode == Mode.House)
             {
                 var newcharacters = await HouseService.Instance.NextPage(lastsearch);
                 RepopulateObservableCollection(newcharacters, house.swornMembers);
             }
             
         }
-        public async Task PreviousPage(int mode)
+        public async Task PreviousPage(Mode mode)
         {
-            if (mode == 0)
+            if (mode == Mode.Book)
             {
                 var newcharacters = await BookService.Instance.PreviousPage(lastsearch);
                 RepopulateObservableCollection(newcharacters, book.characters);
             }
-            else if (mode == 1)
+            else if (mode == Mode.House)
             {
                 var newcharacters = await HouseService.Instance.PreviousPage(lastsearch);
                 RepopulateObservableCollection(newcharacters, house.swornMembers);
