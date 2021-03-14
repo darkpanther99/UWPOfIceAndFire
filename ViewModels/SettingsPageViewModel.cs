@@ -9,10 +9,20 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
 {
+    /// <summary>
+    /// VM of the Settings page, it handles the code behind's requests.
+    /// </summary>
     class SettingsPageViewModel
     {
+        /// <summary>
+        /// A property, which wraps an image's location, andm akes it possible to databind it to the UI.
+        /// </summary>
         public ImageWrapper imageitem { get; set; } = new ImageWrapper() { Image = new BitmapImage(new Uri("ms-appx:///Assets/starklogo.png")) };
 
+        /// <summary>
+        /// Changes the currently selected image.
+        /// </summary>
+        /// <param name="housename">The name of the house, that we want to see the logo of.</param>
         public void RadioButtonSelectionChanged(string housename)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -20,6 +30,9 @@ namespace TXC54G_HF.ViewModels
             imageitem.Image = new BitmapImage(new Uri($"ms-appx:///Assets/{housename}logo.png"));
         }
 
+        /// <summary>
+        /// Returns the index of the currently selected house logo.
+        /// </summary>
         public int GetCurrentlySetIndex()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;

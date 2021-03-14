@@ -22,22 +22,30 @@ using System.Diagnostics;
 namespace TXC54G_HF
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A xaml page for setting the logo, which appears in the application.
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        
+        /// <summary>
+        /// Constructor, which loads the page and sets the radiobuttons'  to match the saved logo.
+        /// </summary>
         public SettingsPage()
         {
             this.InitializeComponent();
             HouseButtons.SelectedIndex = ViewModel.GetCurrentlySetIndex(); 
         }
 
+        /// <summary>
+        /// Event handler, which lets the user go back to the previous xaml page.
+        /// </summary>
         private void NavBarSide_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
             _ = App.TryGoBack();
         }
 
+        /// <summary>
+        /// Event handler, which sends the selected radiobutton's value to the ViewModel.
+        /// </summary>
         private void RadioButtons_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is muxc.RadioButtons rb)

@@ -15,20 +15,83 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
 {
+    /// <summary>
+    /// VM of the Main page, it handles the code behind's requests.
+    /// </summary>
     class MainPageViewModel
     {
+        /// <summary>
+        /// An observable collection of the listed names.
+        /// </summary>
         public ObservableCollection<BaseHelper> listitems { get; set; } = new ObservableCollection<BaseHelper>();
+
+        /// <summary>
+        /// Keeps track of the paging.
+        /// </summary>
+        /// <remarks>
+        /// Paging starts from 1 in the api, so the default value is 1
+        /// </remarks>
         private int page = 1;
+
+        #region Paging methods
+        /// <summary>
+        /// Reinitializes the page.
+        /// </summary>
+        public void initPage()
+        {
+            page = 1;
+        }
+        /// <summary>
+        /// Increments the page.
+        /// </summary>
+        public void nextPage()
+        {
+            page++;
+        }
+        /// <summary>
+        /// Decrements the page, while not letting it go below 1.
+        /// </summary>
+        public void previousPage()
+        {
+            page--;
+            if (page < 1)
+            {
+                initPage();
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Keeps track of the last clicked Mode.
+        /// </summary>
         private Mode lastClicked = Mode.Undefined;
+
+        /// <summary>
+        /// Data about the last query, stores if it was full listing or search.
+        /// </summary>
         private bool lastCommandWasSearch = false;
+
+        /// <summary>
+        /// Data about the last query's text.
+        /// </summary>
         private string lastSearchText = "";
-        public string currentlyBrowsing { get; set; } = "books";
+
+        /// <summary>
+        /// Databound property of the shown logo image
+        /// </summary>
         public ImageWrapper imageitem { get; set; }
+
+        /// <summary>
+        /// The constructor sets the value of the logo to the one selected.
+        /// </summary>
         public MainPageViewModel()
         {
             SetImage();
         }
 
+        /// <summary>
+        /// Sets the image of the logo to the one saved to the LocalSettings.
+        /// </summary>
         private void SetImage()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -42,22 +105,10 @@ namespace TXC54G_HF.ViewModels
                 imageitem = new ImageWrapper() { Image = new BitmapImage(new Uri($"ms-appx:///Assets/{value}logo.png")) };
             }
         }
-        public void initPage()
-        {
-            page = 1;
-        }
-        public void nextPage()
-        {
-            page++;
-        }
-        public void previousPage()
-        {
-            page--;
-            if (page < 1)
-            {
-                initPage();
-            }
-        }
+
+        /// <summary>
+        /// Calls the correct search method depending on which type of entity the user wants to search for.
+        /// </summary>
         public async Task Search(string searchtext, Mode mode)
         {
             //If the search text is empty, I make a listing instead and return.
@@ -88,7 +139,10 @@ namespace TXC54G_HF.ViewModels
             }
             lastSearchText = searchtext;
         }
-        
+
+        /// <summary>
+        /// Calls the correct listing method depending on which type of entity the user wants to make a listing of.
+        /// </summary>
         public async Task ListPreviews(Mode mode)
         {
             lastCommandWasSearch = false;
@@ -112,7 +166,29 @@ namespace TXC54G_HF.ViewModels
                     break;
             }
         }
-        public async Task ListNewPageOfPreviews()
+
+        /// <summary>
+        /// Switches to the next page and lists its contents.
+        /// </summary>
+        public async Task ListNextPageOfPreviews()
+        {
+            this.nextPage();
+            await ListNewPageOfPreviews();
+        }
+
+        /// <summary>
+        /// Switches to the previous page and lists its contents.
+        /// </summary>
+        public async Task ListPrevPageOfPreviews()
+        {
+            this.previousPage();
+            await ListNewPageOfPreviews();
+        }
+
+        /// <summary>
+        /// Repeats the last command.
+        /// </summary>
+        private async Task ListNewPageOfPreviews()
         {
             if (lastCommandWasSearch)
             {
@@ -123,6 +199,11 @@ namespace TXC54G_HF.ViewModels
                 await ListPreviews(lastClicked);
             }
         }
+
+        /// <summary>
+        /// Makes some input validation, then forwards the query to the CharacterService.
+        /// Puts the return value into the Observable Listitems Collection.
+        /// </summary>
         private async Task SearchCharacters(string searchtext)
         {
             var chsInstance = CharacterService.Instance;
@@ -154,16 +235,22 @@ namespace TXC54G_HF.ViewModels
                 var previewIsAlive = await chsInstance.GetCharactersPreviewAsyncFromIsAlive("false", page);
                 AppendToListitems(previewIsAlive);
             }
-
-
-
         }
+
+        /// <summary>
+        /// Forwards the query to the BookService.
+        /// Puts the return value into the Observable Listitems Collection.
+        /// </summary>
         private async Task SearchBooks(string searchtext)
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsyncFromName(searchtext);
             RepopulateListitems(previewitems);
         }
 
+        /// <summary>
+        /// Forwards the query to the HouseService.
+        /// Puts the return value into the Observable Listitems Collection.
+        /// </summary>
         private async Task SearchHouses(string searchtext)
         {
             var hsInstance = HouseService.Instance;
@@ -175,23 +262,41 @@ namespace TXC54G_HF.ViewModels
             AppendToListitems(previewwords);
         }
 
+        /// <summary>
+        /// Forwards the listing query to the CharacterService.
+        /// Puts the return value into the Observable Listitems Collection.
+        /// </summary>
         private async Task ListCharacters()
         {
             var previewitems = await CharacterService.Instance.GetCharactersPreviewAsync(page);
             RepopulateListitems(previewitems);
         }
+
+        /// <summary>
+        /// Forwards the listing query to the HouseService.
+        /// Puts the return value into the Observable Listitems Collection.
+        /// </summary>
         private async Task ListHouses()
         {
             var previewitems = await HouseService.Instance.GetHousesPreviewAsync(page);
             RepopulateListitems(previewitems);
         }
+
+        /// <summary>
+        /// Forwards the listing query to the BookService.
+        /// Puts the return value into the Observable Listitems Collection.
+        /// </summary>
         private async Task ListBooks()
         {
             var previewitems = await BookService.Instance.GetBooksPreviewAsync(page);
             RepopulateListitems(previewitems);
         }
 
-        private void RepopulateListitems(IReadOnlyCollection<BaseHelper> previewitems) //IReadOnlyCollection, mert nem írom át a paramétert és így elfogad Generikus típusnak leszármazottat is.
+        /// <summary>
+        /// Clears the Listitems Collection and fills it from the parameter Collection.
+        /// Entities without names get the name "Unnamed" instead of an empty string.
+        /// </summary>
+        private void RepopulateListitems(IReadOnlyCollection<BaseHelper> previewitems)
         {
             listitems.Clear();
             foreach (var p in previewitems)
@@ -204,6 +309,10 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Fills the Listitems Collection from the parameter Collection.
+        /// Entities without names get the name "Unnamed" instead of an empty string.
+        /// </summary>
         private void AppendToListitems(IReadOnlyCollection<BaseHelper> previewitems)
         {
             foreach (var p in previewitems)
@@ -216,6 +325,9 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Opens a FilePicker, and writes the query result into it.
+        /// </summary>
         public async Task SaveToFile(Mode mode)
         {
             var picker = new FileOpenPicker();
