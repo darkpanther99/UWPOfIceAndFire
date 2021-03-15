@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace TXC54G_HF.ViewModels.Utilities
 {
     /// <summary>
-    /// Tihs is a wrapper class, which lets the logo image be displayed with databinding.
+    /// Tihs is a wrapper class, which allows the logo image to be displayed with databinding.
     /// </summary>
     class ImageWrapper : INotifyPropertyChanged
     {

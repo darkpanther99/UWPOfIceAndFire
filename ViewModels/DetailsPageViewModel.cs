@@ -12,9 +12,11 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace TXC54G_HF.ViewModels
 {
+    /// <summary>
+    /// VM of the Details page, it handles the code behind's requests.
+    /// </summary>
     class DetailsPageViewModel
     {
-        //private int mode = 0;
 
         /// <summary>
         /// Databound Character entity, with initialized Observable Collections.
@@ -58,9 +60,12 @@ namespace TXC54G_HF.ViewModels
         /// Keeps track of the last search.
         /// This is used to be able to handle paging of a shown list.
         /// </summary>
-        private string lastsearch = ""; //ez megmondja milyen módban vagyunk, a lapozáshoz kell
-        //lapozásnál a lapozó függvény továbbadja a search stringet a servicenek
+        private string lastsearch = "";
 
+        /// <summary>
+        /// In book mode, the characters list is pageable, in house mode, the sworn members list.
+        /// If the Page is in the right mode, swaps the pageable list to the next page.
+        /// </summary>
         public async Task NextPage(Mode mode)
         {
             if (mode == Mode.Book)
@@ -73,8 +78,12 @@ namespace TXC54G_HF.ViewModels
                 var newcharacters = await HouseService.Instance.NextPage(lastsearch);
                 RepopulateObservableCollection(newcharacters, house.swornMembers);
             }
-            
         }
+
+        /// <summary>
+        /// In book mode, the characters list is pageable, in house mode, the sworn members list.
+        /// If the Page is in the right mode, swaps the pageable list to the previous page.
+        /// </summary>
         public async Task PreviousPage(Mode mode)
         {
             if (mode == Mode.Book)
@@ -87,13 +96,19 @@ namespace TXC54G_HF.ViewModels
                 var newcharacters = await HouseService.Instance.PreviousPage(lastsearch);
                 RepopulateObservableCollection(newcharacters, house.swornMembers);
             }
-            
         }
+
+        /// <summary>
+        /// The constructor sets the value of the logo to the one selected.
+        /// </summary>
         public DetailsPageViewModel()
         {
             SetImage();
         }
 
+        /// <summary>
+        /// Sets the image of the logo to the one saved to the LocalSettings.
+        /// </summary>
         private void SetImage()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -108,6 +123,9 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Calls the right service for the job, and puts the details of the service's query result into the right. databound property.
+        /// </summary>
         public async Task ShowDetails(string searchstr)
         {
             if (searchstr.Contains("characters"))
@@ -134,6 +152,9 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Returns the URI of a character from its name.
+        /// </summary>
         public async Task<string> GetURIStringFromName(string name)
         {
             var urls = new List<string>();
@@ -162,7 +183,9 @@ namespace TXC54G_HF.ViewModels
             return "";
         }
 
-
+        /// <summary>
+        /// Fills the properties of the databound book.
+        /// </summary>
         private void BuildBook(Book b)
         {
             book.url = b.url;
@@ -178,6 +201,9 @@ namespace TXC54G_HF.ViewModels
             RepopulateObservableCollection(b.povCharacters, book.povCharacters);
         }
 
+        /// <summary>
+        /// Fills the properties of the databound house.
+        /// </summary>
         private void BuildHouse(House hous)
         {
             house.url = hous.url;
@@ -198,6 +224,10 @@ namespace TXC54G_HF.ViewModels
             RepopulateObservableCollection(hous.swornMembers, house.swornMembers);
         }
 
+
+        /// <summary>
+        /// Fills the properties of the databound character.
+        /// </summary>
         private void BuildCharacter(Character charact)
         {
             character.url = charact.url;
@@ -218,6 +248,10 @@ namespace TXC54G_HF.ViewModels
             RepopulateObservableCollection(charact.playedBy, character.playedBy);
         }
 
+
+        /// <summary>
+        /// Empties the destination collection, then copies the source's elements into it.
+        /// </summary>
         private void RepopulateObservableCollection<T>(IReadOnlyCollection<T> source, ObservableCollection<T> destination)
         {
             destination.Clear();
@@ -227,16 +261,25 @@ namespace TXC54G_HF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends a request for a Character to the API through the Service.
+        /// </summary>
         private async Task<Character> GetCharacter(string str)
         {
             return await CharacterService.Instance.GetCharacterAsyncFromFullUrl(new Uri(str), depth:0);
         }
 
+        /// <summary>
+        /// Sends a request for a Book to the API through the Service.
+        /// </summary>
         private async Task<Book> GetBook(string str)
         {
             return await BookService.Instance.GetBookAsyncFromFullUrl(new Uri(str), depth: 0);
         }
 
+        /// <summary>
+        /// Sends a request for a House to the API through the Service.
+        /// </summary>
         private async Task<House> GetHouse(string str)
         {
             return await HouseService.Instance.GetHouseAsyncFromFullUrl(new Uri(str), depth: 0);

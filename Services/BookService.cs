@@ -10,12 +10,14 @@ using System.Collections.ObjectModel;
 
 namespace TXC54G_HF.Services
 {
+    /// <summary>
+    /// Singleton Service, which forwards Book queries to the API.
+    /// </summary>
     class BookService : BaseService
     {
+        #region Singleton things
         private BookService() { }
         private static BookService instance = null;
-        private int start = 0;
-        private const int charactersonpage = 10;
         public static BookService Instance
         {
             get
@@ -27,20 +29,42 @@ namespace TXC54G_HF.Services
                 return instance;
             }
         }
-        
+        #endregion
+
+
+        private int start = 0;
+        private const int charactersonpage = 10;
+
+        /// <summary>
+        /// Returns the book with the correct ID.
+        /// </summary>
         public async Task<Book> GetBookAsync(int id)
         {
             return await GetBookAsyncFromFullUrl(new Uri(baseUrl, $"books/{id}"), depth: 0);
         }
+
+        /// <summary>
+        /// Returns a preview object from books on the specified page.
+        /// </summary>
         public async Task<List<BookHelper>> GetBooksPreviewAsync(int page)
         {
             return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?page={page}&pageSize=30"));
         }
+
+        /// <summary>
+        /// Returns a preview object from books with the specified name.
+        /// </summary>
         public async Task<List<BookHelper>> GetBooksPreviewAsyncFromName(string name)
         {
             return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?name={name}&pageSize=30"));
         }
 
+        /// <summary>
+        /// Returns a book object from the specified URI.
+        /// This is a recursive function, because the JSON responses from the API are pointing to each other by URI-s.
+        /// Gets all details of a book from the API, and for all the nested URI-s, it calls the right service.
+        /// When is has constructed the full book object, returns it.
+        /// </summary>
         public async Task<Book> GetBookAsyncFromFullUrl(Uri uri, int depth)
         {
             if (depth > 1)
@@ -70,6 +94,7 @@ namespace TXC54G_HF.Services
             {
                 book.authors.Add(author);
             }
+            start = 0;
             int end = start + charactersonpage;
             for (int i = start; i < end; ++i)
             {
@@ -85,6 +110,9 @@ namespace TXC54G_HF.Services
             return book;
         }
 
+        /// <summary>
+        /// Returns a list of characters on paging the list of the book's characters.
+        /// </summary>
         public async Task<List<Character>> NextPage(string searchstr)
         {
             //ezt lehet lehetne gyorsítani, kevesebb fölösleges dolgot lekérdezni

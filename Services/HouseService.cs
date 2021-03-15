@@ -97,6 +97,7 @@ namespace TXC54G_HF.Services
                 House h = await GetHouseAsyncFromFullUrl(new Uri(cadetbranch), depth + 1);
                 house.cadetBranches.Add(h);
             }
+            start = 0;
             int end = start + charactersonpage;
             if (end > househelper.swornMembers.Count())
             {
