@@ -9,10 +9,19 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services
 {
-    class BaseService
+    /// <summary>
+    /// Base class of the Services.
+    /// </summary>
+    public abstract class BaseService
     {
+        /// <summary>
+        /// The Base URL of the API is stored here.
+        /// </summary>
         protected readonly Uri baseUrl = new Uri("https://www.anapioficeandfire.com/api/");
 
+        /// <summary>
+        /// Gets a specified entity from the API, using the uri parameter, then returns it deserialized into a C# object.
+        /// </summary>
         protected async Task<T> GetAsync<T>(Uri uri)
         {
             using (var client = new HttpClient())

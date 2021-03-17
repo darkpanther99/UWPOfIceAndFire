@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Models
 {
+    /// <summary>
+    /// Base Model class. Acts as a base class for all entities in the Models package.
+    /// Implements the INPC interface for databinding, and defines a function, which can be used to simplify code of the PropertyChanged notifications.
+    /// </summary>
     public abstract class BaseModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
+    /// <summary>
+    /// Character helper class. Stores the referenced books, characters, houses using URI strings.
+    /// </summary>
     class CharacterHelper : BaseHelper
     {
         public string gender { get; set; }

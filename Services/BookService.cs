@@ -31,8 +31,16 @@ namespace TXC54G_HF.Services
         }
         #endregion
 
+        /// <summary>
+        /// Stores how many books can be on the same page.
+        /// </summary>
+        private int pageSize = 30;
 
         private int start = 0;
+
+        /// <summary>
+        /// Stores how many characters can be on the same page(the list of characters in a book is pageable).
+        /// </summary>
         private const int charactersonpage = 10;
 
         /// <summary>
@@ -48,7 +56,7 @@ namespace TXC54G_HF.Services
         /// </summary>
         public async Task<List<BookHelper>> GetBooksPreviewAsync(int page)
         {
-            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?page={page}&pageSize=30"));
+            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?page={page}&pageSize={pageSize}"));
         }
 
         /// <summary>
@@ -56,14 +64,14 @@ namespace TXC54G_HF.Services
         /// </summary>
         public async Task<List<BookHelper>> GetBooksPreviewAsyncFromName(string name)
         {
-            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?name={name}&pageSize=30"));
+            return await GetAsync<List<BookHelper>>(new Uri(baseUrl, $"books?name={name}&pageSize={pageSize}"));
         }
 
         /// <summary>
         /// Returns a book object from the specified URI.
         /// This is a recursive function, because the JSON responses from the API are pointing to each other by URI-s.
         /// Gets all details of a book from the API, and for all the nested URI-s, it calls the right service.
-        /// When is has constructed the full book object, returns it.
+        /// When it has constructed the full book object, returns it.
         /// </summary>
         public async Task<Book> GetBookAsyncFromFullUrl(Uri uri, int depth)
         {
@@ -111,7 +119,7 @@ namespace TXC54G_HF.Services
         }
 
         /// <summary>
-        /// Returns a list of characters on paging the list of the book's characters.
+        /// Returns a List of the next charactersonpage number of characters.
         /// </summary>
         public async Task<List<Character>> NextPage(string searchstr)
         {
@@ -120,6 +128,9 @@ namespace TXC54G_HF.Services
             return await GetCharactersFromInterval(new Uri(searchstr));
         }
 
+        /// <summary>
+        /// Returns a List of the previous charactersonpage number of characters.
+        /// </summary>
         public async Task<List<Character>> PreviousPage(string searchstr)
         {
             start -= charactersonpage;
@@ -130,6 +141,9 @@ namespace TXC54G_HF.Services
             return await GetCharactersFromInterval(new Uri(searchstr));
         }
 
+        /// <summary>
+        /// Gets a bookhelper object from the API, and returns a List of the bookhelper's characters in the specified interval(charactersonpage number of characters, starting from the start field's value)
+        /// </summary>
         private async Task<List<Character>> GetCharactersFromInterval(Uri uri)
         {
             var bookhelper = await GetAsync<BookHelper>(uri);

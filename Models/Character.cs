@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Models
 {
-
+    /// <summary>
+    /// Character Model class. Can be used for databinding, because of the ObservableCollections and INPC interface.
+    /// Stores its references to other Model entities using C# references(pointers).
+    /// </summary>
     public class Character : BaseModel
     {
         public string url { get; set; }

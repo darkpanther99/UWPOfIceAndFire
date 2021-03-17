@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
+    /// <summary>
+    /// House helper class. Stores the referenced characters, houses using URI strings.
+    /// </summary>
     class HouseHelper : BaseHelper
     {
         public string region { get; set; }

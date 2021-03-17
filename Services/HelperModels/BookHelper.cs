@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
+    /// <summary>
+    /// Book helper class. Stores the referenced characters using URI strings.
+    /// </summary>
     class BookHelper : BaseHelper
     {
         public string isbn { get; set; }

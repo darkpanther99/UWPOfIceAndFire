@@ -10,8 +10,12 @@ using TXC54G_HF.Services.HelperModels;
 
 namespace TXC54G_HF.Services
 {
+    /// <summary>
+    /// Singleton Service, which forwards Character queries to the API.
+    /// </summary>
     class CharacterService : BaseService
     {
+        #region Singleton things
         private CharacterService() { }
 
         private static CharacterService instance = null;
@@ -23,44 +27,78 @@ namespace TXC54G_HF.Services
                 return instance;
             } 
         }
-        
+        #endregion
+
+        /// <summary>
+        /// Stores how many characters can be on the same page.
+        /// </summary>
+        private int pageSize = 30;
+
+        /// <summary>
+        /// Returns the character with the correct ID.
+        /// </summary>
         public async Task<Character> GetCharacterAsync(int id)
         {
             return await GetCharacterAsyncFromFullUrl(new Uri(baseUrl, $"characters/{id}"), depth: 0);
         }
+
+        /// <summary>
+        /// Returns a preview object from characters on the specified page.
+        /// </summary>
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsync(int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?page={page}&pageSize=30"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?page={page}&pageSize={pageSize}"));
         }
 
+        /// <summary>
+        /// Returns a preview object from characters with the specified name.
+        /// </summary>
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromName(string name)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}&pageSize=30"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}&pageSize={pageSize}"));
         }
 
+        /// <summary>
+        /// Returns a preview object from characters with the specified gender, from the specified page.
+        /// </summary>
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromGender(string gender, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?gender={gender}&page={page}&pageSize=30"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?gender={gender}&page={page}&pageSize={pageSize}"));
         }
 
+        /// <summary>
+        /// Returns a preview object from characters with the specified culture, from the specified page.
+        /// </summary>
         public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromCulture(string culture, int page)
         {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?culture={culture}&page={page}&pageSize=30"));
-        }
-        public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromBirth(string birth, int page)
-        {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?born={birth}&page={page}&pageSize=30"));
-        }
-        public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromDeath(string death, int page)
-        {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?died={death}&page={page}&pageSize=30"));
-        }
-        public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromIsAlive(string isalive, int page)
-        {
-            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?isAlive={isalive}&page={page}&pageSize=30"));
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?culture={culture}&page={page}&pageSize={pageSize}"));
         }
 
-        public async Task<List<Character>> GetCharactersAsyncFromName(string name)
+        /// <summary>
+        /// Returns a preview object from characters with the specified birth date, from the specified page.
+        /// </summary>
+        public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromBirth(string birth, int page)
+        {
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?born={birth}&page={page}&pageSize={pageSize}"));
+        }
+
+        /// <summary>
+        /// Returns a preview object from characters with the specified birth date, from the specified page.
+        /// </summary>
+        public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromDeath(string death, int page)
+        {
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?died={death}&page={page}&pageSize={pageSize}"));
+        }
+
+        /// <summary>
+        /// Returns a preview object from characters with the specified state of being alive or not, from the specified page.
+        /// </summary>
+        public async Task<List<CharacterHelper>> GetCharactersPreviewAsyncFromIsAlive(string isalive, int page)
+        {
+            return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?isAlive={isalive}&page={page}&pageSize={pageSize}"));
+        }
+
+        /*public async Task<List<Character>> GetCharactersAsyncFromName(string name)
         {
             var results = await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}"));
             var resultslist = new List<Character>();
@@ -71,10 +109,15 @@ namespace TXC54G_HF.Services
             }
 
             return resultslist;
-        }
+        }*/
 
-        
 
+        /// <summary>
+        /// Returns a character object from the specified URI.
+        /// This is a recursive function, because the JSON responses from the API are pointing to each other by URI-s.
+        /// Gets all details of a character from the API, and for all the nested URI-s, it calls the right service.
+        /// When it has constructed the full character object, returns it.
+        /// </summary>
         public async Task<Character> GetCharacterAsyncFromFullUrl(Uri uri, int depth)
         {
             if (depth > 1)

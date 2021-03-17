@@ -10,12 +10,14 @@ using TXC54G_HF.Services.HelperModels;
 
 namespace TXC54G_HF.Services
 {
+    /// <summary>
+    /// Singleton Service, which forwards House queries to the API.
+    /// </summary>
     class HouseService : BaseService
     {
+        #region Singleton things
         private HouseService() { }
         private static HouseService instance = null;
-        private int start = 0;
-        private const int charactersonpage = 10;
         public static HouseService Instance
         {
             get
@@ -27,29 +29,67 @@ namespace TXC54G_HF.Services
                 return instance;
             }
         }
+        #endregion
 
 
+        /// <summary>
+        /// Stores how many houses can be on the same page.
+        /// </summary>
+        private int pageSize = 30;
+
+        private int start = 0;
+
+        /// <summary>
+        /// Stores how many characters can be on the same page(the list of sworn member characters of a house is pageable).
+        /// </summary>
+        private const int charactersonpage = 10;
+
+        /// <summary>
+        /// Returns the House with the correct ID.
+        /// </summary>
         public async Task<House> GetHouseAsync(int id)
         {
             return await GetHouseAsyncFromFullUrl(new Uri(baseUrl, $"houses/{id}"), depth: 0);
         }
+
+        /// <summary>
+        /// Returns a preview object from houses on the specified page.
+        /// </summary>
         public async Task<List<HouseHelper>> GetHousesPreviewAsync(int page)
         {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?page={page}&pageSize=30"));
-        }
-        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromName(string name)
-        {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?name={name}&pageSize=30"));
-        }
-        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromRegion(string region, int page)
-        {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?region={region}&page={page}&pageSize=30"));
-        }
-        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromWords(string words, int page)
-        {
-            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?words={words}&page={page}&pageSize=30"));
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?page={page}&pageSize={pageSize}"));
         }
 
+        /// <summary>
+        /// Returns a preview object from houses with the specified name.
+        /// </summary>
+        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromName(string name)
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?name={name}&pageSize={pageSize}"));
+        }
+
+        /// <summary>
+        /// Returns a preview object from houses from the specified region, from the specified page.
+        /// </summary>
+        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromRegion(string region, int page)
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?region={region}&page={page}&pageSize={pageSize}"));
+        }
+
+        /// <summary>
+        /// Returns a preview object from houses which has the specified words, from the specified page.
+        /// </summary>
+        public async Task<List<HouseHelper>> GetHousesPreviewAsyncFromWords(string words, int page)
+        {
+            return await GetAsync<List<HouseHelper>>(new Uri(baseUrl, $"houses?words={words}&page={page}&pageSize={pageSize}"));
+        }
+
+        /// <summary>
+        /// Returns a house object from the specified URI.
+        /// This is a recursive function, because the JSON responses from the API are pointing to each other by URI-s.
+        /// Gets all details of a house from the API, and for all the nested URI-s, it calls the right service.
+        /// When it has constructed the full house object, returns it.
+        /// </summary>
         public async Task<House> GetHouseAsyncFromFullUrl(Uri uri, int depth)
         {
             if (depth > 1)
@@ -117,6 +157,9 @@ namespace TXC54G_HF.Services
             return house;
         }
 
+        /// <summary>
+        /// Returns a List of the next charactersonpage number of characters.
+        /// </summary>
         public async Task<List<Character>> NextPage(string searchstr)
         {
             //ezt lehet lehetne gyorsítani, kevesebb fölösleges dolgot lekérdezni
@@ -124,6 +167,9 @@ namespace TXC54G_HF.Services
             return await GetCharactersFromInterval(new Uri(searchstr));
         }
 
+        /// <summary>
+        /// Returns a List of the previous charactersonpage number of characters.
+        /// </summary>
         public async Task<List<Character>> PreviousPage(string searchstr)
         {
             start -= charactersonpage;
@@ -134,6 +180,9 @@ namespace TXC54G_HF.Services
             return await GetCharactersFromInterval(new Uri(searchstr));
         }
 
+        /// <summary>
+        /// Gets a househelper object from the API, and returns a List of the househelper's swornMembers in the specified interval(charactersonpage number of characters, starting from the start field's value)
+        /// </summary>
         private async Task<List<Character>> GetCharactersFromInterval(Uri uri)
         {
             var househelper = await GetAsync<HouseHelper>(uri);

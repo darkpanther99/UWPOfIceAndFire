@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Models
 {
-
+    /// <summary>
+    /// Book Model class. Can be used for databinding, because of the ObservableCollections and INPC interface.
+    /// Stores its references to other Model entities using C# references(pointers).
+    /// </summary>
     public class Book : BaseModel
     {
         private string _name;

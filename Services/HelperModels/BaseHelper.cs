@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TXC54G_HF.Services.HelperModels
 {
+    /// <summary>
+    /// Base of the Helper classes. This class is used for databinding the preview object's name to the Main page, thus it implements the INPC interface.
+    /// </summary>
     class BaseHelper : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
