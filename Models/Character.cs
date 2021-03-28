@@ -14,7 +14,7 @@ namespace TXC54G_HF.Models
     /// </summary>
     public class Character : BaseModel
     {
-        public string url { get; set; }
+        //public string url { get; set; }
         private string _name;
         public string name { get { return _name; } set { SetProperty(ref _name, value); } }
         private string _gender;

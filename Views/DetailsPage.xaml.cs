@@ -30,7 +30,6 @@ namespace TXC54G_HF
         /// </summary>
         private Mode mode = Mode.Book;
 
-
         private List<StackPanel> bookControls = new List<StackPanel>();
         private List<StackPanel> characterControls = new List<StackPanel>();
         private List<StackPanel> houseControls = new List<StackPanel>();
@@ -115,28 +114,56 @@ namespace TXC54G_HF
 
         /// <summary>
         /// When the user clicks on a Character entity to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
         /// After the reordering, the UI shows the details of the character which fired this event.
         /// </summary>
         private async void OnCharacterClick(object sender, TappedRoutedEventArgs e)
         {
+            QueryState.Text = "Query Started";
             CharacterMode();
             var src = sender as TextBlock;
-            var toShow = await ViewModel.GetURIStringFromName(src.Text);
-            QueryState.Text = "Query Started";
+            string toShow = "";
+
+            //Switch case doesn't work now, because UI controls' names are not constant.
+            if (src.Name == CurrentLordText.Name) {
+                toShow = ViewModel.house.currentLord.url;
+            } 
+            else if (src.Name == HeirText.Name) {
+                toShow = ViewModel.house.heir.url;
+            } 
+            else if (src.Name == FounderText.Name) {
+                toShow = ViewModel.house.founder.url;
+            } 
+            else if (src.Name == fatherText.Name) {
+                toShow = ViewModel.character.father.url;
+            } 
+            else if (src.Name == motherText.Name) {
+                toShow = ViewModel.character.mother.url;
+            }
+            else if (src.Name == spouseText.Name) {
+                toShow = ViewModel.character.spouse.url;
+            }
+
             await ViewModel.ShowDetails(toShow);
             QueryState.Text = "Query Completed";
         }
 
         /// <summary>
         /// When the user clicks on a House entity to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
         /// After the reordering, the UI shows the details of the house which fired this event.
         /// </summary>
         private async void OnHouseClick(object sender, TappedRoutedEventArgs e)
         {
+            QueryState.Text = "Query Started";
             HouseMode();
             var src = sender as TextBlock;
-            var toShow = await ViewModel.GetURIStringFromName(src.Text);
-            QueryState.Text = "Query Started";
+            string toShow = "";
+
+            if (src.Name == OverlordText.Name) {
+                toShow = ViewModel.house.overlord.url;
+            }
+            
             await ViewModel.ShowDetails(toShow);
             QueryState.Text = "Query Completed";
         }
@@ -162,6 +189,7 @@ namespace TXC54G_HF
             {
                 control.Visibility = Visibility.Collapsed;
             }
+
         }
 
         /// <summary>
@@ -185,6 +213,7 @@ namespace TXC54G_HF
             {
                 control.Visibility = Visibility.Collapsed;
             }
+
         }
 
         /// <summary>
@@ -208,6 +237,7 @@ namespace TXC54G_HF
             {
                 control.Visibility = Visibility.Visible;
             }
+
         }
 
         /// <summary>
@@ -231,5 +261,131 @@ namespace TXC54G_HF
             await ViewModel.PreviousPage(mode);
             QueryState.Text = "Query Completed";
         }
+
+        /// <summary>
+        /// When the user clicks on a Character entity from the housemembers list to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
+        /// After the reordering, the UI shows the details of the character which fired this event.
+        /// </summary>
+        private async void housemembers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CharacterMode();
+            var src = sender as ListView;
+            if (src.Name == housemembers.Name)
+            {
+                QueryState.Text = "Query Started";
+                var idx = src.SelectedIndex;
+                if (idx != -1) {
+                    //Resetting the selected item, because without it, bugs and index out of bounds exceptions will fly.
+                    src.SelectedItem = null;
+                    await ViewModel.ShowDetails(ViewModel.house.swornMembers[idx].url);
+                }
+                QueryState.Text = "Query Completed";
+            }
+
+        }
+
+
+        /// <summary>
+        /// When the user clicks on a House entity from the cadet branches list to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
+        /// After the reordering, the UI shows the details of the house which fired this event.
+        /// </summary>
+        private async void cadetbranchlist_SelectionChanged(object sender, SelectionChangedEventArgs e){
+
+            HouseMode();
+            var src = sender as ListView;
+            if (src.Name == cadetbranchlist.Name) {
+                QueryState.Text = "Query Started";
+                var idx = src.SelectedIndex;
+                if (idx != -1) {
+                    //Resetting the selected item, because without it, bugs and index out of bounds exceptions will fly.
+                    src.SelectedItem = null;
+                    await ViewModel.ShowDetails(ViewModel.house.cadetBranches[idx].url);
+                }
+                QueryState.Text = "Query Completed";
+            }
+            
+        }
+
+
+        /// <summary>
+        /// When the user clicks on a Character entity from the bookcharacters or bookpovcharacters list to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
+        /// After the reordering, the UI shows the details of the character which fired this event.
+        /// </summary>
+        private async void bookcharacters_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+            CharacterMode();
+            var src = sender as ListView;
+            QueryState.Text = "Query Started";
+            var idx = src.SelectedIndex;
+            if (idx != -1) {
+                //Resetting the selected item, because without it, bugs and index out of bounds exceptions will fly.
+                src.SelectedItem = null;
+                if (src.Name == bookcharacters.Name) {
+                    await ViewModel.ShowDetails(ViewModel.book.characters[idx].url);
+                }
+                else if (src.Name == bookPovCharacters.Name) {
+                    await ViewModel.ShowDetails(ViewModel.book.povCharacters[idx].url);
+                }
+
+            }
+                
+            QueryState.Text = "Query Completed";
+        }
+
+
+        /// <summary>
+        /// When the user clicks on a House entity from the characterAllegiances list to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
+        /// After the reordering, the UI shows the details of the house which fired this event.
+        /// </summary>
+        private async void characterAllegiances_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+            HouseMode();
+            var src = sender as ListView;
+            if (src.Name == characterAllegiances.Name) {
+                QueryState.Text = "Query Started";
+                var idx = src.SelectedIndex;
+                if (idx != -1) {
+                    //Resetting the selected item, because without it, bugs and index out of bounds exceptions will fly.
+                    src.SelectedItem = null;
+                    await ViewModel.ShowDetails(ViewModel.character.allegiances[idx].url);
+
+                }
+                QueryState.Text = "Query Completed";
+            }
+            
+        }
+
+
+        /// <summary>
+        /// When the user clicks on a Book entity from the characterbooks or characterpovbooks list to watch its details, the UI controls get reordered to be able to show it.
+        /// Checks the sender of the input, and based on that, sends the correct url to the ViewModel to show its details.
+        /// After the reordering, the UI shows the details of the book which fired this event.
+        /// </summary>
+        private async void characterBooks_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+            BookMode();
+            var src = sender as ListView;
+            QueryState.Text = "Query Started";
+            var idx = src.SelectedIndex;
+            if (idx != -1) {
+
+                //Resetting the selected item, because without it, bugs and index out of bounds exceptions will fly.
+                src.SelectedItem = null;
+                if (src.Name == characterBooks.Name) {
+                    await ViewModel.ShowDetails(ViewModel.character.books[idx].url);
+                }
+                else if (src.Name == characterPovBooks.Name) {
+                    await ViewModel.ShowDetails(ViewModel.character.povBooks[idx].url);
+                }
+
+            }
+            QueryState.Text = "Query Completed";
+        }
+
+
     }
 }

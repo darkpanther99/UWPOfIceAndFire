@@ -111,8 +111,8 @@ namespace TXC54G_HF.Services
             }
             foreach (var bookcharacter in bookhelper.povCharacters)
             {
-                    Character pc = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookcharacter), depth + 1);
-                    book.povCharacters.Add(pc);
+                Character pc = await characterService.GetCharacterAsyncFromFullUrl(new Uri(bookcharacter), depth + 1);
+                book.povCharacters.Add(pc);
             }
 
             return book;
