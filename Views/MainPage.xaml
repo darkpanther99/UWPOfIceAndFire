@@ -15,7 +15,7 @@
     </Page.DataContext>
     <Page.TopAppBar>
         <CommandBar DefaultLabelPosition="Right">
-            <AppBarButton Icon="Filter" Label="File" Click="FileButton_Click"/>
+            <AppBarButton Icon="Filter" Label="Save to File" Click="FileButton_Click"/>
             <AppBarButton Icon="Back" VerticalAlignment="Top" Click="Button_Click_5"/>
             <AppBarButton Icon="Forward" VerticalAlignment="Top" Click="Button_Click_6"/>
             <AppBarElementContainer Width="300" >

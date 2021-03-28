@@ -154,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\baratheonlogo.png" />
-    <Content Include="Assets\greyjoylogo.png" />
     <Content Include="Assets\lannisterlogo.png" />
     <Content Include="Assets\starklogo.png" />
     <Content Include="Properties\Default.rd.xml" />

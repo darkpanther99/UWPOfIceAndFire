@@ -326,7 +326,7 @@ namespace TXC54G_HF.ViewModels
         }
 
         /// <summary>
-        /// Opens a FilePicker, and writes the query result into it.
+        /// Opens a file with a FilePicker, and writes all entities' name of a chosen entity type into it.
         /// </summary>
         public async Task SaveToFile(Mode mode)
         {
@@ -336,17 +336,17 @@ namespace TXC54G_HF.ViewModels
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
+                await FileIO.WriteTextAsync(file, $"All {mode.ToString()}s:\n");
                 var toWrite = await GetEverything(mode);
-                Debug.WriteLine("írás kezdődik!");
-                //var lines = await FileIO.ReadLinesAsync(file);
-                await FileIO.WriteLinesAsync(file, toWrite);
+                await FileIO.AppendLinesAsync(file, toWrite);
             }
-            else
-            {
-            }
+
         }
 
-        public async Task<IEnumerable<string>> GetEverything(Mode mode)
+        /// <summary>
+        /// Returns every entity's name from a certain type, as an IEnumerable of strings.
+        /// </summary>
+        private async Task<IEnumerable<string>> GetEverything(Mode mode)
         {
             var res = new List<string>();
             int pagelocal = 1; //Paging starts from 1

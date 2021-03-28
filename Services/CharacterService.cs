@@ -98,19 +98,6 @@ namespace TXC54G_HF.Services
             return await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?isAlive={isalive}&page={page}&pageSize={pageSize}"));
         }
 
-        /*public async Task<List<Character>> GetCharactersAsyncFromName(string name)
-        {
-            var results = await GetAsync<List<CharacterHelper>>(new Uri(baseUrl, $"characters?name={name}"));
-            var resultslist = new List<Character>();
-            
-            foreach(var res in results)
-            {
-                resultslist.Add(await GetCharacterAsyncFromFullUrl(new Uri(res.url), depth:0));
-            }
-
-            return resultslist;
-        }*/
-
 
         /// <summary>
         /// Returns a character object from the specified URI.

@@ -164,7 +164,7 @@ namespace TXC54G_HF
 
 
         /// <summary>
-        /// Tells the viewmodel to save the current lsiting's names to a file.
+        /// Tells the viewmodel to save the current listing's names to a file.
         /// </summary>
         private async void FileButton_Click(object sender, RoutedEventArgs e)
         {

@@ -51,9 +51,6 @@ namespace TXC54G_HF.ViewModels
                     case "baratheon":
                         idx = 2;
                         break;
-                    case "greyjoy":
-                        idx = 3;
-                        break;
                     default:
                         break;
                 }

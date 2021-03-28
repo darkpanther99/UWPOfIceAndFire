@@ -148,11 +148,6 @@ namespace TXC54G_HF.Services
                 Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(househelper.swornMembers[i]), depth + 1);
                 house.swornMembers.Add(c);
             }
-            /*foreach (var swornmember in househelper.swornMembers)
-            {
-                Character c = await characterService.GetCharacterAsyncFromFullUrl(new Uri(swornmember), depth + 1);
-                house.swornMembers.Add(c);
-            }*/
 
             return house;
         }
@@ -162,7 +157,6 @@ namespace TXC54G_HF.Services
         /// </summary>
         public async Task<List<Character>> NextPage(string searchstr)
         {
-            //ezt lehet lehetne gyorsítani, kevesebb fölösleges dolgot lekérdezni
             start += charactersonpage;
             return await GetCharactersFromInterval(new Uri(searchstr));
         }
